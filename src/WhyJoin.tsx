@@ -203,13 +203,15 @@ export default function WhyJoin() {
           </button>
         </div>
 
-        {modalType && (
-          <LoginSignupModal
-            isOpen={true}
-            type={modalType}
-            onClose={() => setModalType(null)}
-          />
-        )}
+            {modalType && (
+             <LoginSignupModal
+               isOpen={true}
+               type={modalType}
+               onClose={() => setModalType(null)}
+               onInstance1Signup={() => {}}   // ← FIX
+             />
+           )}
+
       </div>
     </section>
   );

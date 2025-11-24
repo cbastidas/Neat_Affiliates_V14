@@ -30,8 +30,10 @@ export default function Root() {
           isOpen={true}
           type={modalType}
           onClose={() => setModalType(null)}
+          onInstance1Signup={() => {}}   // ← FIX
         />
       )}
+
     </>
   );
 }

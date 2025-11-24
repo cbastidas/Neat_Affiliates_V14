@@ -34,7 +34,7 @@ export default function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [modalType, setModalType] = useState<'login' | 'signup' | null>(null);
   const [contactOpen, setContactOpen] = useState(false);
-  const [contactInstance, setContactInstance] = useState<string | null>(null);
+  const [contactInstance] = useState<string | null>(null);
   //const { map: ui } = useUiSections(); 
   const [isContactEmailOpen, setIsContactEmailOpen] = useState(false);
   const [openInstance1Form, setOpenInstance1Form] = useState(false);
@@ -70,10 +70,6 @@ export default function App() {
     }
   };
 
-  const openContactFor = (instance: string) => {
-  setContactInstance(instance);
-  setContactOpen(true);
-};
 
   const getSignupForBrand = (brand: any) => {
   const byBrand = (brand.signup_url || '').trim();
@@ -121,12 +117,6 @@ export default function App() {
   }
 
   const groupOrder = ['Realm', 'Throne', 'Neatplay', 'Neatplay-Latam'];
-  const publicNames: Record<string, string> = {
-  Realm: 'Instance 1',
-  Throne: 'Instance 2',
-  'Neatplay': 'Instance 3',
-  'Neatplay-Latam': 'Instance 4',
-};
 
   const groupedBrands = groupOrder.map((groupName) => ({
     groupName,

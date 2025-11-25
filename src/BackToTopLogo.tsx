@@ -33,8 +33,8 @@ export default function BackToTopLogo({ homeAnchorId }: Props) {
           aria-label="Back to top"
           className="
             hidden md:flex 
-            fixed bottom-6 right-6 
-            z-40 w-14 h-14 
+            fixed bottom-5 right-5 
+            z-40 w-10 h-10
             rounded-full 
             bg-green-600 text-white 
             shadow-xl 

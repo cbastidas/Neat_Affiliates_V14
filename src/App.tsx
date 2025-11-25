@@ -380,22 +380,26 @@ export default function App() {
     className="
       hidden 
       lg:flex
-      fixed left-6 
-      bottom-6 
+      fixed left-4 
+      bottom-4 
       z-[10000]
-      px-5 py-3
+      px-3 py-2
       bg-purple-700 
       text-white 
       rounded-full 
-      shadow-lg 
+      shadow-md 
+      text-sm
       font-semibold
-      hover:bg-purple-900 
-      transition
+      hover:bg-purple-800 
+      active:scale-95
+      transition-all
+      duration-200
     "
   >
-    Contact Us 💬
+    Contact 💬
   </button>
 )}
+
 
     {/* Mobile-only floating Contact button (bottom-left) */}
 {!isContactEmailOpen && (

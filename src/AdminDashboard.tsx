@@ -10,6 +10,50 @@ import LogoVisibilityManager from './LogoVisibilityManager';
 import './styles.css';
 import SectionVisibilityToggle from "./SectionVisibilityToggle";
 
+// ------------------------------------------------------
+// DND-KIT IMPORTS
+// ------------------------------------------------------
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors
+} from "@dnd-kit/core";
+
+import {
+  arrayMove,
+  SortableContext,
+  useSortable,
+  rectSortingStrategy
+} from "@dnd-kit/sortable";
+
+import { CSS } from "@dnd-kit/utilities";
+
+
+// ------------------------------------------------------
+// SORTABLE WRAPPER FOR EACH BRANDCARD
+// ------------------------------------------------------
+function SortableBrandCard({ id, children }: { id: string; children: React.ReactNode }) {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
+
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition
+  };
+
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      {children}
+    </div>
+  );
+}
+
+
+// ------------------------------------------------------
+// MAIN ADMIN DASHBOARD
+// ------------------------------------------------------
 interface CommissionTier {
   range: string;
   rate: string;
@@ -25,12 +69,14 @@ interface Brand {
   is_visible: boolean;
   commission_tiers: CommissionTier[];
   group?: string;
+  order?: number;
 }
 
 export default function AdminDashboard() {
   const [brands, setBrands] = useState<Brand[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
+
   const whyJoinRef = useRef<HTMLDivElement>(null);
   const commissionRef = useRef<HTMLDivElement>(null);
   const brandsRef = useRef<HTMLDivElement>(null);
@@ -38,11 +84,18 @@ export default function AdminDashboard() {
   const faqRef = useRef<HTMLDivElement>(null);
   const loginRef = useRef<HTMLDivElement>(null);
 
+  // DND sensors
+  const sensors = useSensors(useSensor(PointerSensor));
+
+
+  // ------------------------------------------------------
+  // LOAD BRANDS FROM SUPABASE ORDERED BY 'order'
+  // ------------------------------------------------------
   const fetchBrands = async () => {
     const { data, error } = await supabase
       .from('brands')
       .select('*')
-      .order('created_at', { ascending: false });
+      .order('order', { ascending: true });
 
     if (error) {
       console.error('Error loading brands:', error);
@@ -61,148 +114,147 @@ export default function AdminDashboard() {
     fetchBrands();
   }, []);
 
+
+  // ------------------------------------------------------
+  // RENDER
+  // ------------------------------------------------------
   return (
     <div className="p-6">
-      {/* NAVBAR FIXED */}
+
+      {/* FIXED TOP NAVBAR */}
       <div className="fixed top-0 left-0 w-full bg-white shadow z-20 p-4 flex justify-between items-center">
-         <div className="flex items-center gap-4">
-    <img
-      src="./logo.png"
-      alt="Logo"
-      className="h-10 cursor-pointer"
-      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-    />
-    <h1 className="text-xl font-bold">Admin Dashboard</h1>
-    <button
-      onClick={handleLogout}
-      className="ml-2 bg-red-500 text-white px-3 py-1 rounded"
-    >
-      Logout
-    </button>
-  </div>
-        <div style=
 
-              {{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                color: '#374151',
-                padding: '0.5rem 0.75rem',
-                borderRadius: '6px',
-                transition: 'background 0.2s, color 0.2s',
-                whiteSpace: 'nowrap',
-              }}>
-          <button style=
+        {/* LEFT SIDE */}
+        <div className="flex items-center gap-4">
+          <img
+            src="./logo.png"
+            alt="Logo"
+            className="h-10 cursor-pointer"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          />
+          <h1 className="text-xl font-bold">Admin Dashboard</h1>
 
-              {{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                color: '#374151',
-                padding: '0.5rem 0.75rem',
-                borderRadius: '6px',
-                transition: 'background 0.2s, color 0.2s',
-                whiteSpace: 'nowrap',
-              }} onClick={() => whyJoinRef.current?.scrollIntoView({ behavior: 'smooth' })}>Why Join</button>
-          <button style=
-
-              {{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                color: '#374151',
-                padding: '0.5rem 0.75rem',
-                borderRadius: '6px',
-                transition: 'background 0.2s, color 0.2s',
-                whiteSpace: 'nowrap',
-              }}  onClick={() => commissionRef.current?.scrollIntoView({ behavior: 'smooth' })}>Commission Rate</button>
-          <button style=
-
-              {{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                color: '#374151',
-                padding: '0.5rem 0.75rem',
-                borderRadius: '6px',
-                transition: 'background 0.2s, color 0.2s',
-                whiteSpace: 'nowrap',
-              }} onClick={() => brandsRef.current?.scrollIntoView({ behavior: 'smooth' })}>Our Brands</button>
-          <button style=
-
-              {{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                color: '#374151',
-                padding: '0.5rem 0.75rem',
-                borderRadius: '6px',
-                transition: 'background 0.2s, color 0.2s',
-                whiteSpace: 'nowrap',
-              }} onClick={() => contactRef.current?.scrollIntoView({ behavior: 'smooth' })}>Contact</button>
-          <button style=
-
-              {{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                color: '#374151',
-                padding: '0.5rem 0.75rem',
-                borderRadius: '6px',
-                transition: 'background 0.2s, color 0.2s',
-                whiteSpace: 'nowrap',
-              }} onClick={() => faqRef.current?.scrollIntoView({ behavior: 'smooth' })}>FAQ</button>
+          <button
+            onClick={handleLogout}
+            className="ml-2 bg-red-500 text-white px-3 py-1 rounded"
+          >
+            Logout
+          </button>
         </div>
+
+        {/* RIGHT SIDE - NAVIGATION BUTTONS */}
+        <div className="flex gap-4">
+          <button onClick={() => whyJoinRef.current?.scrollIntoView({ behavior: 'smooth' })}>Why Join</button>
+          <button onClick={() => commissionRef.current?.scrollIntoView({ behavior: 'smooth' })}>Commission Rate</button>
+          <button onClick={() => brandsRef.current?.scrollIntoView({ behavior: 'smooth' })}>Our Brands</button>
+          <button onClick={() => contactRef.current?.scrollIntoView({ behavior: 'smooth' })}>Contact</button>
+          <button onClick={() => faqRef.current?.scrollIntoView({ behavior: 'smooth' })}>FAQ</button>
+        </div>
+
       </div>
 
+
+
+      {/* ------------------------------------------------------
+          PAGE CONTENT
+      ------------------------------------------------------ */}
       <div className="pt-28 space-y-16">
+
+        {/* WHY JOIN */}
         <section ref={whyJoinRef}>
-          <h2 className="text-2xl font-bold text-center mb-6"></h2>
           <WhyJoinEditor />
         </section>
-        
 
 
+        {/* ------------------------------------------------------
+            COMMISSION RATE (WITH DRAG & DROP)
+        ------------------------------------------------------ */}
         <section ref={commissionRef}>
           <h2 className="text-2xl font-bold text-center mb-6">Commission Rate</h2>
-          <AddBrandModal isOpen={showAddModal} onClose={() => setShowAddModal(false)} onSave={fetchBrands} />
+
+          {/* Add Brand button + modal */}
+          <AddBrandModal
+            isOpen={showAddModal}
+            onClose={() => setShowAddModal(false)}
+            onSave={fetchBrands}
+          />
+
           <div className="flex justify-center mb-4">
-            <button onClick={() => setShowAddModal(true)} className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+            <button
+              onClick={() => setShowAddModal(true)}
+              className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+            >
               ➕ Add Brand
             </button>
           </div>
+
+          {/* BRAND LIST WITH DRAG & DROP */}
           {loading ? (
             <p className="text-center">Loading brands...</p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center">
-              {brands.map((brand) => (
-                <BrandCard
-                  key={brand.id}
-                  id={brand.id}
-                  logoUrl={brand.logo_url}
-                  name={brand.name}
-                  commissionTiers={brand.commission_tiers || []}
-                  commissionType={brand.commission_type}
-                  isVisible={brand.is_visible}
-                  onSave={fetchBrands}
-                  group={brand.group}
-                />
-              ))}
+            <div className="mt-8">
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={async (event) => {
+                  const { active, over } = event;
+                  if (!over || active.id === over.id) return;
+
+                  const oldIndex = brands.findIndex((b) => b.id === active.id);
+                  const newIndex = brands.findIndex((b) => b.id === over.id);
+
+                  const reordered = arrayMove(brands, oldIndex, newIndex);
+
+                  setBrands(reordered);
+
+                  // SAVE ORDER TO SUPABASE
+                  const updates = reordered.map((b, index) => ({
+                    id: b.id,
+                    order: index,
+                  }));
+
+                  const { error } = await supabase.from("brands").upsert(updates);
+                  if (error) console.error("Error saving drag order:", error);
+                }}
+              >
+                <SortableContext
+                  items={brands.map((b) => b.id)}
+                  strategy={rectSortingStrategy}
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center">
+
+                    {brands.map((brand) => (
+                      <SortableBrandCard key={brand.id} id={brand.id}>
+
+                        <BrandCard
+                          id={brand.id}
+                          logoUrl={brand.logo_url}
+                          name={brand.name}
+                          commissionTiers={brand.commission_tiers || []}
+                          commissionType={brand.commission_type}
+                          isVisible={brand.is_visible}
+                          onSave={fetchBrands}
+                          group={brand.group}
+                        />
+
+                      </SortableBrandCard>
+                    ))}
+
+                  </div>
+                </SortableContext>
+              </DndContext>
             </div>
           )}
         </section>
 
+
+        {/* OUR BRANDS */}
         <section ref={brandsRef}>
-          <h2 className="text-2xl font-bold text-center mb-6"></h2>
           <LogoVisibilityManager />
         </section>
 
+
+        {/* CONTACT */}
         <section ref={contactRef}>
           <SectionVisibilityToggle sectionKey="contact_section" size="md" />
           <h2 className="text-2xl font-bold text-center mb-6">📬 Contact Admin Editor</h2>
@@ -210,16 +262,19 @@ export default function AdminDashboard() {
         </section>
 
 
-
+        {/* FAQ */}
         <section ref={faqRef}>
           <h2 className="text-2xl font-bold text-center mb-6">❓ FAQ Admin Editor</h2>
           <FaqEditor />
         </section>
 
+
+        {/* LOGIN / SIGNUP */}
         <section ref={loginRef}>
           <h2 className="text-2xl font-bold text-center mb-6">🔐 Login/Signup Admin Editor</h2>
-          <AuthEditor/>
+          <AuthEditor />
         </section>
+
       </div>
     </div>
   );

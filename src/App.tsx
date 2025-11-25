@@ -85,7 +85,7 @@ export default function App() {
         .from('brands')
         .select('*, signup_url')
         .eq('is_visible', true)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: true });
 
       if (error) {
         console.error('Error fetching brands:', error.message);

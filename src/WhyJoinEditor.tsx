@@ -5,7 +5,7 @@ interface Reason {
   id: number;
   emoji_url: string;
   title: string;
-  description: string; // still exists in DB but we ignore it
+  description: string;
   order: number;
 }
 
@@ -14,7 +14,7 @@ export default function WhyJoinEditor() {
   const [newReason, setNewReason] = useState<Omit<Reason, 'id' | 'order'>>({
     emoji_url: '',
     title: '',
-    description: '', // ignored but kept for DB compatibility
+    description: '',
   });
 
   const fetchReasons = async () => {
@@ -27,12 +27,12 @@ export default function WhyJoinEditor() {
   }, []);
 
   const handleAdd = async () => {
-    if (!newReason.title) return; // description no longer required
+    if (!newReason.title) return;
 
     const order = reasons.length;
     const { error } = await supabase
       .from('why_join')
-      .insert([{ ...newReason, description: '', order }]); // description blank
+      .insert([{ ...newReason, order }]);
 
     if (!error) {
       setNewReason({ emoji_url: '', title: '', description: '' });
@@ -41,11 +41,7 @@ export default function WhyJoinEditor() {
   };
 
   const handleUpdate = async (id: number, updates: Partial<Reason>) => {
-    await supabase
-      .from('why_join')
-      .update({ ...updates, description: '' }) // force empty description
-      .eq('id', id);
-
+    await supabase.from('why_join').update(updates).eq('id', id);
     fetchReasons();
   };
 
@@ -100,9 +96,6 @@ export default function WhyJoinEditor() {
             if (file) handleFileUpload(file, undefined, true);
           }}
         />
-        <span className="text-sm text-gray-500">
-          Upload PNG/SVG image, max 100x100px
-        </span>
 
         <input
           placeholder="Title"
@@ -111,6 +104,15 @@ export default function WhyJoinEditor() {
             setNewReason({ ...newReason, title: e.target.value })
           }
           className="border p-2 rounded"
+        />
+
+        <input
+          placeholder="Short description"
+          value={newReason.description}
+          onChange={(e) =>
+            setNewReason({ ...newReason, description: e.target.value })
+          }
+          className="border p-2 rounded w-64"
         />
 
         <button
@@ -144,9 +146,16 @@ export default function WhyJoinEditor() {
               }
             />
 
-            {/* Description removed completely */}
+            <textarea
+              className="w-full text-center border rounded p-2 text-sm"
+              value={reason.description || ''}
+              placeholder="Description"
+              onChange={(e) =>
+                handleUpdate(reason.id, { description: e.target.value })
+              }
+            />
 
-            <div className="mt-2 flex justify-center gap-4">
+            <div className="mt-4 flex justify-center gap-4">
               <button
                 onClick={() => handleDelete(reason.id)}
                 className="text-red-600 font-semibold"
@@ -155,7 +164,7 @@ export default function WhyJoinEditor() {
               </button>
 
               <label className="text-blue-600 cursor-pointer">
-                Change Emoji
+                Change Icon
                 <input
                   type="file"
                   accept="image/png, image/svg+xml, image/jpeg"

@@ -4,11 +4,10 @@ import LoginSignupModal from "./LoginSignupModal";
 
 interface WhyJoinItem {
   id: string;
-  icon: string;
   title: string;
   description: string;
-  order: number;
   emoji_url: string;
+  order: number;
 }
 
 export default function WhyJoin() {
@@ -17,7 +16,7 @@ export default function WhyJoin() {
   const [modalType, setModalType] = useState<"login" | "signup" | null>(null);
 
   // ------------------------------------------------------------
-  // Fetch items from Supabase
+  // Load all cards directly from Supabase
   // ------------------------------------------------------------
   useEffect(() => {
     const fetchWhyJoinItems = async () => {
@@ -39,180 +38,149 @@ export default function WhyJoin() {
   }, []);
 
   if (loading) {
-    return <p className="text-center text-gray-500">Loading Why Join section...</p>;
+    return (
+      <p className="text-center text-gray-500">
+        Loading Why Join section...
+      </p>
+    );
   }
 
   // ------------------------------------------------------------
-  // Groups defined by TITLE (Option A: "group by title")
-  // Each entry is an array of titles contained in the group
+  // Animation keyframes (slide from left)
   // ------------------------------------------------------------
-  const GROUPS = [
-    [
-      "Fiat and Crypto Payment method",
-      "Monthly and Bi-monthly Payments"
-    ],
-    [
-      "Known and trusted brands",
-      "High Conversion Rate"
-    ],
-    [
-      "High Commission Rates",
-      "No negative carryover"
-    ],
-    [
-      "Many brands with unique selling points",
-      "24/7 support for players"
-    ],
-    [
-      "Postbacks and real time tracking",
-      "Transparent stats"
-    ],
-    [
-      "Many creatives options"
-    ],
-  ];
-
-  // ------------------------------------------------------------
-  // Build final grouped structure using titles
-  // ------------------------------------------------------------
-  const grouped = GROUPS.map((groupTitles) => {
-    // Find matching items by title (the order is defined by titles)
-    const foundItems = groupTitles
-      .map((t) => items.find((it) => it.title === t))
-      .filter(Boolean) as WhyJoinItem[];
-
-    return {
-      // Use emoji of the first item found (per your rule)
-      emoji: foundItems[0]?.emoji_url || "",
-      // Titles rendered as bullets
-      titles: groupTitles
-    };
-  });
+  const cardAnimation = `
+    @keyframes slideIn {
+      0% {
+        opacity: 0;
+        transform: translateX(-40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+  `;
 
   return (
-    <section id="WhyJoin" className="py-16 bg-white rounded-2xl border">
-      <div className="max-w-6xl mx-auto px-4">
+    <>
+      {/* Inject animation into page */}
+      <style>{cardAnimation}</style>
 
-        {/* ------------------------------------------------------------
-            Section Header
-        ------------------------------------------------------------ */}
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-4">
-          Why Join Neat Affiliates?
-        </h2>
-        <p className="text-center text-gray-500 mb-12">
-          Top reasons why affiliates love working with us
-        </p>
+      <section id="WhyJoin" className="py-16 bg-white rounded-2xl border">
+        <div className="max-w-6xl mx-auto px-4">
 
-{/* ------------------------------------------------------------
-    MOBILE VERSION — Ultra compact cards with emoji on the left
------------------------------------------------------------- */}
-<div className="md:hidden grid grid-cols-1 gap-3">
+          {/* ------------------------------------------------------------
+              Section Header
+          ------------------------------------------------------------ */}
+          <h2 className="text-3xl font-bold text-center text-gray-800 mb-4">
+            Why Join Neat Affiliates?
+          </h2>
+          <p className="text-center text-gray-500 mb-12">
+            Top reasons why affiliates love working with us
+          </p>
 
-  {grouped.map((group, index) => (
-    <div
-      key={index}
-      className="
-        p-2
-        bg-white
-        shadow-sm
-        rounded-lg
-        border border-gray-200
-        flex
-        items-start
-        gap-3
-      "
-    >
-      {/* Compact emoji on the left */}
-      {group.emoji && (
-        <img
-          src={group.emoji}
-          alt="Group icon"
-          className="flex-shrink-0 mt-1"
-          style={{ width: 30, height: 30 }}
-        />
-      )}
+          {/* ------------------------------------------------------------
+              MOBILE VERSION — 1 card per row
+          ------------------------------------------------------------ */}
+          <div className="md:hidden grid grid-cols-1 gap-4">
+            {items.map((item, index) => (
+              <div
+                key={item.id}
+                className="p-4 bg-white shadow-sm rounded-lg border border-gray-200 flex items-start gap-3 opacity-0"
+                style={{
+                  animation: "slideIn 1.2s ease-out forwards",
+                  animationDelay: `${index}s`,
+                }}
+              >
+                {/* Icon */}
+                {item.emoji_url && (
+                  <img
+                    src={item.emoji_url}
+                    alt="Icon"
+                    className="mt-1 flex-shrink-0"
+                    style={{ width: 32, height: 32 }}
+                  />
+                )}
 
-      {/* Bullet list on the right */}
-      <ul className="space-y-1 leading-tight">
-        {group.titles.map((t, i) => (
-          <li key={i} className="flex items-start text-sm">
-            <span className="mr-2 mt-1 text-purple-600 font-bold">•</span>
-            <span className="text-gray-800 font-medium">{t}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  ))}
+                {/* Title + Description */}
+                <div>
+                  <h3 className="text-gray-800 font-semibold text-sm mb-1">
+                    {item.title}
+                  </h3>
 
-</div>
+                  <p className="text-gray-600 text-xs leading-snug">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
 
+          {/* ------------------------------------------------------------
+              DESKTOP VERSION — 3 columns
+          ------------------------------------------------------------ */}
+          <div className="hidden md:grid grid-cols-3 gap-6">
+            {items.map((item, index) => (
+              <div
+                key={item.id}
+                className="
+                  p-8 bg-white shadow-md rounded-xl border border-gray-200
+                  hover:shadow-lg hover:border-purple-300 transition text-center opacity-0
+                "
+                style={{
+                  animation: "slideIn 1.2s ease-out forwards",
+                  animationDelay: `${index}s`,
+                }}
+              >
+                {/* Icon */}
+                {item.emoji_url && (
+                  <img
+                    src={item.emoji_url}
+                    alt="Icon"
+                    className="mx-auto mb-4"
+                    style={{ width: 60, height: 60 }}
+                  />
+                )}
 
+                {/* Title */}
+                <h3 className="text-gray-800 font-bold text-lg mb-2">
+                  {item.title}
+                </h3>
 
-        {/* ------------------------------------------------------------
-            DESKTOP VERSION: 3 columns × 2 rows
-            Each card contains 1 emoji + multiple bullet points
-        ------------------------------------------------------------ */}
-        <div className="hidden md:grid grid-cols-3 gap-6">
-          {grouped.map((group, index) => (
-            <div
-              key={index}
+                {/* Description */}
+                <p className="text-gray-600 text-sm px-4 leading-relaxed">
+                  {item.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* ------------------------------------------------------------
+              CTA BUTTON
+          ------------------------------------------------------------ */}
+          <div className="text-center mt-12">
+            <button
+              onClick={() => setModalType("signup")}
               className="
-                p-8
-                bg-white
-                shadow-md
-                rounded-xl
-                border border-gray-200
-                hover:shadow-lg
-                hover:border-purple-300
-                transition
-                text-center
+                text-xl font-bold px-6 py-3 rounded-full
+                bg-purple-600 text-white hover:bg-purple-800
+                shadow-lg transition
               "
             >
-              {/* Card Emoji */}
-              {group.emoji && (
-                <img
-                  src={group.emoji}
-                  alt="Group icon"
-                  className="mx-auto mb-4"
-                  style={{ width: 60, height: 60 }}
-                />
-              )}
+              Join Neat Affiliates
+            </button>
+          </div>
 
-              {/* Bullet Items */}
-              <ul className="space-y-2 mt-2">
-                {group.titles.map((t, i) => (
-                  <li key={i} className="flex items-start justify-center">
-                    <span className="mr-2 text-purple-600 font-bold">•</span>
-                    <span className="text-gray-800 font-medium">{t}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {modalType && (
+            <LoginSignupModal
+              isOpen={true}
+              type={modalType}
+              onClose={() => setModalType(null)}
+              onInstance1Signup={() => {}}
+            />
+          )}
         </div>
-
-        {/* ------------------------------------------------------------
-            CTA Button
-        ------------------------------------------------------------ */}
-        <div className="text-center mt-10">
-          <button
-            onClick={() => setModalType("signup")}
-            className="text-xl font-bold px-6 py-3 rounded-full bg-purple-600 text-white hover:bg-purple-800 shadow-lg transition"
-          >
-            Join Neat Affiliates
-          </button>
-        </div>
-
-            {modalType && (
-             <LoginSignupModal
-               isOpen={true}
-               type={modalType}
-               onClose={() => setModalType(null)}
-               onInstance1Signup={() => {}}   // ← FIX
-             />
-           )}
-
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

@@ -21,6 +21,7 @@ import CommissionRateMobile from './CommissionRateMobile';
 import Testimonials from './Testimonials';
 // NEW: modal for full instance signup form
 import RealmSignupModal from './RealmSignupModal';
+import ThroneSignupModal from './ThroneSignupModal';
 
 
 
@@ -38,6 +39,8 @@ export default function App() {
   //const { map: ui } = useUiSections(); 
   const [isContactEmailOpen, setIsContactEmailOpen] = useState(false);
   const [openInstance1Form, setOpenInstance1Form] = useState(false);
+  const [openThroneForm, setOpenThroneForm] = useState(false);
+
   
 
 
@@ -373,6 +376,7 @@ export default function App() {
               type={modalType}
               onClose={() => setModalType(null)}
               onInstance1Signup={() => setOpenInstance1Form(true)}  // 🔥 NEW
+              onInstance2Signup={() => setOpenThroneForm(true)}
             />
           )}
       </div>
@@ -451,6 +455,12 @@ export default function App() {
   isOpen={openInstance1Form}
   onClose={() => setOpenInstance1Form(false)}
 />
+
+<ThroneSignupModal
+  isOpen={openThroneForm}
+  onClose={() => setOpenThroneForm(false)}
+/>
+
 
     </main>
     </div>

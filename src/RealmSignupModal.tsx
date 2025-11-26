@@ -161,9 +161,9 @@ useEffect(() => {
                         <input className="border rounded p-2" type="date" />
                     </div>
 
-                    {/* Skype */}
+                    {/* Teams */}
                     <div className="flex flex-col">
-                        <label className="font-semibold">Skype</label>
+                        <label className="font-semibold">Teams (Skype)</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 

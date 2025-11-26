@@ -21,6 +21,7 @@ interface Props {
   type: 'login' | 'signup';
   onClose: () => void;
   onInstance1Signup: () => void;
+  onInstance2Signup: () => void; 
 }
 
 
@@ -35,6 +36,7 @@ export default function LoginSignupModal({
   type,
   onClose,
   onInstance1Signup,
+  onInstance2Signup,
 }: Props) {
   const [authLinks, setAuthLinks] = useState<AuthLink[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
@@ -109,6 +111,14 @@ export default function LoginSignupModal({
                     onInstance1Signup();
                     return;
                   }
+
+                  if (instance === 'Throne' && type === 'signup') {
+                    e.preventDefault();
+                    onClose();
+                    onInstance2Signup();   // opens ThroneSignupModal
+                    return;
+                  }
+
 
                   // Normal behavior
                   const url =

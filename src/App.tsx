@@ -20,7 +20,7 @@ import ContactEmailModal from "./ContactEmailModal";
 import CommissionRateMobile from './CommissionRateMobile';
 import Testimonials from './Testimonials';
 // NEW: modal for full instance signup form
-import InstanceSignupModal from "./InstanceSignupModal";
+import RealmSignupModal from './RealmSignupModal';
 
 
 
@@ -53,7 +53,7 @@ export default function App() {
   // 🟢 Fetch signup links by instance (auth table)
   const fetchSignupLinks = async () => {
     const { data, error } = await supabase
-      .from('auth_links') // 👉 cambia a 'auth_links' si esa es tu tabla real
+      .from('auth_links')
       .select('instance, signup');
 
     if (error) {
@@ -116,12 +116,25 @@ export default function App() {
     return session ? <AdminDashboard /> : <AdminLogin />;
   }
 
-  const groupOrder = ['Realm', 'Throne', 'Vidavegas - Latam', 'Vidavegas - BR', 'Bluffbet', 'Jackburst'];
+  const groupOrder = ['Realm', 'Throne', 'Neatplay'];
 
-  const groupedBrands = groupOrder.map((groupName) => ({
+  const groupedBrands = groupOrder.map((groupName) => {
+  if (groupName === 'Neatplay') {
+    return {
+      groupName,
+      brands: brands.filter((b) =>
+        ['Vidavegas - Latam', 'Vidavegas - BR', 'Bluffbet', 'Jackburst']
+          .includes(b.group)
+      ),
+    };
+  }
+
+  return {
     groupName,
     brands: brands.filter((b) => b.group === groupName),
-  }));
+  };
+});
+
 
   // return
 
@@ -396,7 +409,7 @@ export default function App() {
       duration-200
     "
   >
-    Contact 💬
+    Telegram 💬
   </button>
 )}
 
@@ -434,7 +447,7 @@ export default function App() {
   onClose={() => setIsContactEmailOpen(false)}
 />
 
-<InstanceSignupModal
+<RealmSignupModal
   isOpen={openInstance1Form}
   onClose={() => setOpenInstance1Form(false)}
 />

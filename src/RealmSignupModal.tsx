@@ -1,17 +1,38 @@
-// InstanceSignupModal.tsx
-import React, { useState } from 'react';
+// RealmSignupModal.tsx
+import React, { useState, useEffect } from 'react'; // 🔹 NEW: added useEffect
+import { supabase } from './lib/supabaseClient';    // 🔹 NEW: import supabase
 
 interface Props {
     isOpen: boolean;
     onClose: () => void;
 }
 
-const InstanceSignupModal: React.FC<Props> = ({ isOpen, onClose }) => {
+const RealmSignupModal: React.FC<Props> = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 const [paymentMethod, setPaymentMethod] = useState<'bank' | 'crypto' | 'papel' | null>(null);
 const [autoInvoice, setAutoInvoice] = useState(false);
 
+// 🔹 NEW: state to store Realm brands
+const [realmBrands, setRealmBrands] = useState<any[]>([]);
 
+// 🔹 NEW: load Realm brands from Supabase when the modal opens
+useEffect(() => {
+  if (!isOpen) return;
+
+  const fetchRealmBrands = async () => {
+    const { data, error } = await supabase
+      .from('brands')
+      .select('id, name, logo_url, group, order')
+      .eq('group', 'Realm')
+      .order('order', { ascending: true });
+
+    if (!error && data) {
+      setRealmBrands(data);
+    }
+  };
+
+  fetchRealmBrands();
+}, [isOpen]);
 
     return (
         <div 
@@ -30,8 +51,24 @@ const [autoInvoice, setAutoInvoice] = useState(false);
 
                 {/* Modal Title */}
                 <h2 className="text-center text-3xl font-semibold mb-6">
-                    Signup for Brands MB, CAMX, CAME and MOBH
+                    Create Your Affiliate Account
                 </h2>
+
+                <p className="text-center text-gray-600 mb-8">
+                    Please fill in the form below to create your account for the brands shown below.
+                </p>
+
+                {/* 🔹 NEW: Realm logos from Supabase */}
+                <div className="flex flex-wrap justify-center gap-6 mb-8">
+                  {realmBrands.map((brand) => (
+                      <img
+                        key={brand.id}
+                        src={brand.logo_url}
+                        alt={brand.name}
+                        className="h-12 w-auto object-contain"
+                      />
+                  ))}
+                </div>
 
                 {/* FORM START */}
                 <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -443,4 +480,4 @@ const [autoInvoice, setAutoInvoice] = useState(false);
     );
 };
 
-export default InstanceSignupModal;
+export default RealmSignupModal;

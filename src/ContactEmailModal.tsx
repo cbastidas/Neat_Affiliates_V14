@@ -83,22 +83,11 @@ export default function ContactEmailModal({ isOpen, onClose }: Props) {
         <p className="text-center text-gray-600 mb-5">
           Fill the form below and we will receive your message on Telegram.
         </p>
+        <p className="font-bold text-center text-gray-400 mb-2">
+          Bluffbet, Vidavegas and Jackburst have their own support channels.
+        </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Your email <span className="text-red-600">*</span>
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="you@example.com"
-              required
-            />
-          </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">

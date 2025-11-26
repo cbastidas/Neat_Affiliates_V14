@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { supabase } from './lib/supabaseClient.ts';
 import BrandCard from './BrandCard.tsx';
 import AddBrandModal from './AddBrandModal.tsx';
@@ -44,7 +44,24 @@ function SortableBrandCard({ id, children }: { id: string; children: React.React
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div ref={setNodeRef} style={style} className="relative">
+      {/* Drag handle – solo esto es draggable */}
+      <button
+        type="button"
+        className="
+          absolute -top-2 -left-2 z-10
+          w-6 h-6 rounded-full
+          bg-purple-600 text-white text-xs
+          flex items-center justify-center
+          cursor-move shadow
+        "
+        {...attributes}
+        {...listeners}
+        onClick={(e) => e.preventDefault()} // que no dispare clicks en la card
+      >
+        ☰
+      </button>
+
       {children}
     </div>
   );
@@ -225,7 +242,6 @@ export default function AdminDashboard() {
 
                     {brands.map((brand) => (
                       <SortableBrandCard key={brand.id} id={brand.id}>
-
                         <BrandCard
                           id={brand.id}
                           logoUrl={brand.logo_url}
@@ -236,7 +252,6 @@ export default function AdminDashboard() {
                           onSave={fetchBrands}
                           group={brand.group}
                         />
-
                       </SortableBrandCard>
                     ))}
 

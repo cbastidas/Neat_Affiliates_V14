@@ -131,21 +131,21 @@ export default function App() {
     <div className="font-sans min-h-screen bg-gray-50">
       {/* Navbar */}
 
-<nav className="fixed top-0 left-0 w-full bg-white shadow-md px-6 py-2 flex justify-between items-center flex-wrap z-20">
+<nav className="fixed top-0 left-0 w-full bg-white shadow z-20 p-4 flex justify-between items-center">
 
   {/* Logo - Takes to TOP */}
-  <div
+  <div 
     onClick={() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       setMenuOpen(false);
     }}
-    style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+    className="flex items-center gap-2"
   >
-    <img src="/logo.png" alt="Logo" style={{ height: '28px' }} />
+    <img src="/logo.png" alt="Logo" className="h-9 w-21 cursor-pointer" />
   </div>
 
     {/* Hamburguer Menu */}
-      <div className="md:hidden flex items-center gap-4">
+      <div className="md:hidden flex items-center gap-2 px-3">
       {/* 🟢 Login Button (Mobile Only) */}
       <button
           onClick={() => setModalType('login')}
@@ -191,14 +191,14 @@ export default function App() {
 
   <button
     onClick={() => setModalType('signup')}
-    className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-800"
+    className="bg-green-600 text-white px-3 py-0 rounded hover:bg-green-800"
   >
     Register
   </button>
 
   <button
     onClick={() => setModalType('login')}
-    className="bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-800"
+    className="bg-purple-600 text-white px-3 py-0 rounded hover:bg-purple-800"
   >
     Login
   </button>

@@ -145,7 +145,7 @@ export default function App() {
   </div>
 
     {/* Hamburguer Menu */}
-      <div className="md:hidden flex items-center gap-8">
+      <div className="md:hidden flex items-center gap-4">
       {/* 🟢 Login Button (Mobile Only) */}
       <button
           onClick={() => setModalType('login')}

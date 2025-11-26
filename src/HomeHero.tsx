@@ -28,14 +28,14 @@ export default function HomeHero({ onSignup, onScrollNext }: Props) {
         <div className="mt-8 flex items-center justify-center gap-3">
           <button
             onClick={onSignup}
-            className="font-bold text-base sm:text-lg lg:text-xl rounded-xl bg-green-600 px-9 py-3 text-white hover:bg-green-800 transition"
+            className="font-bold sm:text-base lg:text-lg rounded-xl bg-green-600 px-5 py-2 sm:px-7 sm:py-3 text-white hover:bg-green-800 transition"
           >
             Register Now and Start Earning
           </button>
 
           <button
             onClick={onScrollNext}
-            className="font-bold text-base sm:text-lg lg:text-xl rounded-xl border px-6 py-3 text-gray-700 hover:bg-gray-100 transition"
+            className="font-bold text-sm sm:text-base lg:text-lg rounded-xl border px-4 py-2 sm:px-6 sm:py-3 text-gray-700 hover:bg-gray-100 transition"
             aria-label="Scroll to next section"
           >
             Learn more

@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef } from "react";
 import { supabase } from "./lib/supabaseClient";
 import { useSearchParams } from "react-router-dom";
 import TestimonialsEditor from "./TestimonialsEditor";
@@ -15,95 +15,142 @@ export default function Testimonials() {
   const [searchParams] = useSearchParams();
   const isAdmin = searchParams.get("admin") === "true";
 
-  const [index, setIndex] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [active, setActive] = useState(0);
+  const [maxScrollIndex, setMaxScrollIndex] = useState(0);
 
-  // ------------------------------------------------------------
-  // Fetch testimonials from Supabase
-  // ------------------------------------------------------------
+  // Auto-slide
+  const autoTimer = useRef<NodeJS.Timeout | null>(null);
+  const userInteracting = useRef(false);
+
   useEffect(() => {
     const fetchTestimonials = async () => {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("testimonials")
         .select("*")
         .order("created_at", { ascending: false });
 
-      if (!error) setTestimonials(data || []);
+      setTestimonials(data || []);
     };
     fetchTestimonials();
   }, []);
 
-  // ------------------------------------------------------------
-  // Get width of ONE slide depending on device size
-  // Each slide is w-full (mobile), w-1/2 (tablet), w-1/3 (desktop)
-  // ------------------------------------------------------------
-  const getSlideWidth = useCallback(() => {
-    const track = trackRef.current;
-    if (!track) return 0;
+  const calculateMaxScroll = () => {
+    const el = trackRef.current;
+    if (!el || testimonials.length === 0) {
+      setMaxScrollIndex(0);
+      return;
+    }
 
-    const firstSlide = track.querySelector(".slide") as HTMLElement;
-    if (!firstSlide) return 0;
+    const slideEl = el.querySelector(
+      ".testimonial-slide"
+    ) as HTMLElement | null;
+    if (!slideEl) return;
 
-    return firstSlide.clientWidth;
-  }, []);
+    const slideWidth = slideEl.clientWidth;
+    const visibleSlidesCount = Math.floor(el.clientWidth / slideWidth);
+    const max = testimonials.length - visibleSlidesCount;
 
-  // ------------------------------------------------------------
-  // Move to specific slide using translateX
-  // ------------------------------------------------------------
-  const goTo = useCallback(
-    (newIndex: number) => {
-      const total = testimonials.length;
-      const track = trackRef.current;
-      if (!track) return;
-
-      const slideWidth = getSlideWidth();
-
-      // Infinite loop wrap
-      const finalIndex = (newIndex + total) % total;
-
-      track.style.transform = `translateX(-${finalIndex * slideWidth}px)`;
-      setIndex(finalIndex);
-    },
-    [testimonials.length, getSlideWidth]
-  );
-
-  const next = useCallback(() => goTo(index + 1), [index, goTo]);
-  const prev = useCallback(() => goTo(index - 1), [index, goTo]);
-
-  // ------------------------------------------------------------
-  // Auto-slide every 4 seconds
-  // ------------------------------------------------------------
-  const startAuto = useCallback(() => {
-    stopAuto();
-    intervalRef.current = setInterval(() => next(), 4000);
-  }, [next]);
-
-  const stopAuto = useCallback(() => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-  }, []);
+    const clampedMax = Math.max(0, max);
+    setMaxScrollIndex(clampedMax);
+    setActive((i) => Math.min(i, clampedMax));
+  };
 
   useEffect(() => {
-    if (testimonials.length === 0) return;
-    startAuto();
-    return stopAuto;
-  }, [testimonials, startAuto, stopAuto]);
+    calculateMaxScroll();
+    window.addEventListener("resize", calculateMaxScroll);
+    return () => window.removeEventListener("resize", calculateMaxScroll);
+  }, [testimonials]);
 
-  // ------------------------------------------------------------
-  // Recalculate transform on resize
-  // ------------------------------------------------------------
+  // Manual scroll actualiza índice activo
+  const onScroll = () => {
+    const el = trackRef.current;
+    if (!el) return;
+
+    const slideEl = el.querySelector(
+      ".testimonial-slide"
+    ) as HTMLElement | null;
+    if (!slideEl) return;
+
+    const cardWidth = slideEl.clientWidth;
+    const i = Math.round(el.scrollLeft / cardWidth);
+    setActive(Math.min(i, maxScrollIndex));
+
+    userInteracting.current = true;
+    resetAutoSlide();
+  };
+
+  const goTo = (i: number) => {
+    const el = trackRef.current;
+    if (!el) return;
+
+    const slideEl = el.querySelector(
+      ".testimonial-slide"
+    ) as HTMLElement | null;
+    if (!slideEl) return;
+
+    const cardWidth = slideEl.clientWidth;
+    const clamped = Math.max(0, Math.min(i, maxScrollIndex));
+
+    el.scrollTo({ left: clamped * cardWidth, behavior: "smooth" });
+    setActive(clamped);
+  };
+
+  const next = () => {
+    const nextIndex = active < maxScrollIndex ? active + 1 : 0;
+    goTo(nextIndex);
+  };
+
+  const prev = () => {
+    const prevIndex = active > 0 ? active - 1 : maxScrollIndex;
+    goTo(prevIndex);
+  };
+
+  // Auto slide
+  const startAutoSlide = () => {
+    if (autoTimer.current) clearInterval(autoTimer.current);
+
+    autoTimer.current = setInterval(() => {
+      if (userInteracting.current) return;
+      next();
+    }, 4000);
+  };
+
+  const resetAutoSlide = () => {
+    userInteracting.current = true;
+    if (autoTimer.current) clearInterval(autoTimer.current);
+
+    // tras 2s de inactividad, volvemos a permitir auto-slide
+    setTimeout(() => {
+      userInteracting.current = false;
+    }, 2000);
+
+    startAutoSlide();
+  };
+
   useEffect(() => {
-    const handleResize = () => goTo(index);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [goTo, index]);
+    if (!testimonials.length) return;
+    startAutoSlide();
+    return () => {
+      if (autoTimer.current) clearInterval(autoTimer.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [testimonials, maxScrollIndex]);
+
+  // Touch: pausar mientras el usuario hace swipe manual
+  const handleTouchStart = () => {
+    userInteracting.current = true;
+    if (autoTimer.current) clearInterval(autoTimer.current);
+  };
+
+  const handleTouchEnd = () => {
+    userInteracting.current = false;
+    startAutoSlide();
+  };
 
   if (isAdmin) return <TestimonialsEditor />;
   if (testimonials.length === 0) return null;
 
-  // ------------------------------------------------------------
-  // RENDER
-  // ------------------------------------------------------------
   return (
     <section
       id="Testimonials"
@@ -114,36 +161,56 @@ export default function Testimonials() {
         Here is what our partners say about us.
       </p>
 
-      <div className="max-w-6xl mx-auto relative overflow-hidden">
+      <div className="max-w-6xl mx-auto relative">
 
-        {/* Left arrow */}
+        {/* Flecha izquierda (solo desktop/tablet) */}
         <button
           onClick={prev}
-          onMouseEnter={stopAuto}
-          onMouseLeave={startAuto}
+          onMouseEnter={() => {
+            userInteracting.current = true;
+            if (autoTimer.current) clearInterval(autoTimer.current);
+          }}
+          onMouseLeave={() => {
+            userInteracting.current = false;
+            startAutoSlide();
+          }}
           className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 
                      bg-white p-2 rounded-full shadow border hover:bg-gray-100 z-10"
         >
           <ChevronLeft className="w-6 h-6 text-purple-600" />
         </button>
 
-        {/* Slider Track */}
+        {/* TRACK: scroll/touch + auto-slide */}
         <div
           ref={trackRef}
-          className="flex transition-transform duration-700 ease-out"
-          onMouseEnter={stopAuto}
-          onMouseLeave={startAuto}
+          onScroll={onScroll}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
+          className="
+            relative flex overflow-x-auto
+            snap-x snap-mandatory
+            scroll-smooth
+            [-webkit-overflow-scrolling:touch]
+            no-scrollbar
+            w-full
+            px-4 
+            mx-[-1rem]
+          "
         >
           {testimonials.map((t) => (
             <div
               key={t.id}
-              className="slide w-full sm:w-1/2 lg:w-1/3 flex-shrink-0 px-4"
+              className="
+                testimonial-slide 
+                snap-start shrink-0 
+                w-full sm:w-1/2 lg:w-1/3 
+                px-4
+              "
             >
-              <div className="bg-white p-6 rounded-xl shadow border border-gray-100 text-left h-full hover:border-purple-300 transition-all">
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">
+              <div className="bg-white p-6 rounded-xl shadow border border-gray-100 text-left h-full flex flex-col hover:border-purple-300">
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">
                   {t.title}
                 </h3>
-
                 <p className="text-gray-700 leading-relaxed italic border-l-4 border-purple-300 pl-3">
                   "{t.content}"
                 </p>
@@ -152,11 +219,17 @@ export default function Testimonials() {
           ))}
         </div>
 
-        {/* Right arrow */}
+        {/* Flecha derecha (solo desktop/tablet) */}
         <button
           onClick={next}
-          onMouseEnter={stopAuto}
-          onMouseLeave={startAuto}
+          onMouseEnter={() => {
+            userInteracting.current = true;
+            if (autoTimer.current) clearInterval(autoTimer.current);
+          }}
+          onMouseLeave={() => {
+            userInteracting.current = false;
+            startAutoSlide();
+          }}
           className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 
                      bg-white p-2 rounded-full shadow border hover:bg-gray-100 z-10"
         >
@@ -164,15 +237,13 @@ export default function Testimonials() {
         </button>
 
         {/* Dots */}
-        <div className="mt-6 flex justify-center gap-2">
-          {testimonials.map((_, i) => (
+        <div className="mt-5 flex items-center justify-center gap-2">
+          {Array.from({ length: maxScrollIndex + 1 }, (_, i) => (
             <button
               key={i}
               onClick={() => goTo(i)}
-              className={`
-                h-2.5 rounded-full transition-all
-                ${i === index ? "bg-purple-700 w-6" : "bg-gray-300 w-2.5"}
-              `}
+              className={`h-2.5 rounded-full transition 
+                ${i === active ? "bg-purple-700 w-6" : "bg-gray-300 w-2.5"}`}
             />
           ))}
         </div>

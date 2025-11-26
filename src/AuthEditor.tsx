@@ -21,8 +21,9 @@ const instanceOptions = [
   'Throne',
   'Realm',
   'Bluffbet',
-  'Vidavegas BR',
-  'Vidavegas Latam',
+  'Vidavegas - BR',
+  'Vidavegas - Latam',
+  'Jackburst',
 ];
 
 function SortableItem({ auth, onChange, onDelete }: {

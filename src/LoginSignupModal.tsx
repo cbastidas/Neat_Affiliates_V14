@@ -1,8 +1,6 @@
-// LoginSignupModal.tsx
 import { useEffect, useState } from 'react';
 import { supabase } from './lib/supabaseClient';
 import { createPortal } from 'react-dom';
-import { getInstanceDisplayName } from './instances';
 
 interface AuthLink {
   id: number;
@@ -20,14 +18,24 @@ interface Brand {
 
 interface Props {
   isOpen: boolean;
-  type: 'login' | 'signup'; // Type of modal
+  type: 'login' | 'signup';
   onClose: () => void;
-
-  // 🔥 NEW: Callback for opening the custom Instance 1 signup form
   onInstance1Signup: () => void;
 }
 
-export default function LoginSignupModal({ isOpen, type, onClose, onInstance1Signup }: Props) {
+
+const normalize = (value?: string | null) =>
+  (value ?? '')
+    .toLowerCase()
+    .replace(/[\s-]+/g, '') 
+    .trim();
+
+export default function LoginSignupModal({
+  isOpen,
+  type,
+  onClose,
+  onInstance1Signup,
+}: Props) {
   const [authLinks, setAuthLinks] = useState<AuthLink[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
 
@@ -37,7 +45,7 @@ export default function LoginSignupModal({ isOpen, type, onClose, onInstance1Sig
     }
   }, [isOpen]);
 
-  // Fetch both auth links and brands from Supabase
+  // Fetch auth links and brands
   const fetchData = async () => {
     const { data: authData } = await supabase
       .from('auth_links')
@@ -52,19 +60,21 @@ export default function LoginSignupModal({ isOpen, type, onClose, onInstance1Sig
     if (brandData) setBrands(brandData);
   };
 
-  // Group auth links by instance name
-  const groupedLinks = authLinks.reduce((acc: Record<string, AuthLink[]>, item) => {
-    acc[item.instance] = acc[item.instance] || [];
-    acc[item.instance].push(item);
-    return acc;
-  }, {});
+  // Group links by instance
+  const groupedLinks = authLinks.reduce(
+    (acc: Record<string, AuthLink[]>, item) => {
+      acc[item.instance] = acc[item.instance] || [];
+      acc[item.instance].push(item);
+      return acc;
+    },
+    {}
+  );
 
   if (!isOpen) return null;
 
   return createPortal(
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-[9999]">
       <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative">
-        
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -79,43 +89,39 @@ export default function LoginSignupModal({ isOpen, type, onClose, onInstance1Sig
 
         <div className="space-y-3 max-h-[70vh] overflow-y-auto">
           {Object.entries(groupedLinks).map(([instance, links]) => {
+            
             const associatedBrands = brands
-              .filter((b) => b.group === instance)
+              .filter(
+                (b) => normalize(b.group) === normalize(instance)
+              )
               .map((b) => b.name)
-              .join(', ') || 'No brands associated';
-
-            const showTooltip = instance === 'Realm' || instance === 'Throne';
-            const tooltipText = showTooltip
-              ? `Brands for this instance: ${associatedBrands}`
-              : undefined;
+              .join(', ');
 
             return (
               <div
                 key={instance}
                 className="block"
                 onClick={(e) => {
-                  // -----------------------------------------------------------------
-                  // 🔥 SPECIAL CASE: INSTANCE 1 (Realm) + Signup → Open internal form
-                  // -----------------------------------------------------------------
-                  if (instance === "Realm" && type === "signup") {
+                  
+                  if (instance === 'Realm' && type === 'signup') {
                     e.preventDefault();
-                    onClose();            // close this modal
-                    onInstance1Signup();  // open custom Instance 1 signup form
+                    onClose();
+                    onInstance1Signup();
                     return;
                   }
 
-                  // -----------------------------------------------------------------
-                  // Normal behavior for every other instance (2, 3, 4)
-                  // -----------------------------------------------------------------
-                  const url = type === "login" ? links[0].login : links[0].signup;
-                  window.open(url, "_blank");
+                  // Normal behavior
+                  const url =
+                    type === 'login' ? links[0].login : links[0].signup;
+                  window.open(url, '_blank');
                 }}
               >
-                <div
-                  title={tooltipText}
-                  className="border p-4 rounded shadow hover:bg-purple-50 transition duration-300 cursor-pointer text-center"
-                >
-                  <p className="font-bold">{getInstanceDisplayName(instance)}</p>
+                <div className="border p-4 rounded shadow hover:bg-purple-50 transition duration-300 cursor-pointer text-center">
+                
+                  <p className="font-bold">
+                    {associatedBrands || 'No brands associated'}
+                  </p>
+
                   <p className="text-sm text-gray-600">
                     {type === 'login' ? 'Login' : 'Signup'} Link
                   </p>
@@ -124,7 +130,6 @@ export default function LoginSignupModal({ isOpen, type, onClose, onInstance1Sig
             );
           })}
         </div>
-
       </div>
     </div>,
     document.body

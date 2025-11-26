@@ -181,8 +181,10 @@ export default function BrandCard({
             <option value="">-- Select Group --</option>
             <option value="Realm">Realm</option>
             <option value="Throne">Throne</option>
-            <option value="Neatplay">Neatplay</option>
-            <option value="Neatplay - Latam">Neatplay - Latam</option>
+            <option value="Bluffbet">Bluffbet</option>
+            <option value="Vidavegas - Latam">Vidavegas - Latam</option>
+            <option value="Jackburst">Jackburst</option>
+            <option value="Vidavegas - BR">Vidavegas - BR</option>
           </select>
         ) : (
           <div className="text-sm text-center text-purple-600 mb-2 font-medium">

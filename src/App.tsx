@@ -116,7 +116,7 @@ export default function App() {
     return session ? <AdminDashboard /> : <AdminLogin />;
   }
 
-  const groupOrder = ['Realm', 'Throne', 'Neatplay', 'Neatplay-Latam'];
+  const groupOrder = ['Realm', 'Throne', 'Vidavegas - Latam', 'Vidavegas - BR', 'Bluffbet', 'Jackburst'];
 
   const groupedBrands = groupOrder.map((groupName) => ({
     groupName,
@@ -141,7 +141,7 @@ export default function App() {
     }}
     className="flex items-center gap-2"
   >
-    <img src="/logo.png" alt="Logo" className="h-9 w-21 cursor-pointer" />
+    <img src="/logo.png" alt="Logo" className="h-10 w-25 cursor-pointer" />
   </div>
 
     {/* Hamburguer Menu */}
@@ -245,7 +245,7 @@ export default function App() {
           onLogin={() => setModalType('login')}
           onSignup={() => setModalType('signup')}
           onScrollNext={() => {
-            const faqSection = document.getElementById('FAQ');
+            const faqSection = document.getElementById('WhyJoin');
             faqSection?.scrollIntoView({ behavior: 'smooth' });
           }}
           />

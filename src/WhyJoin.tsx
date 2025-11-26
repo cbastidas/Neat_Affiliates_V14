@@ -177,6 +177,7 @@ export default function WhyJoin() {
               type={modalType}
               onClose={() => setModalType(null)}
               onInstance1Signup={() => {}}
+              onInstance2Signup={() => {}}
             />
           )}
         </div>

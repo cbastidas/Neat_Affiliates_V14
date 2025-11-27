@@ -178,6 +178,10 @@ export default function WhyJoin() {
               onClose={() => setModalType(null)}
               onInstance1Signup={() => {}}
               onInstance2Signup={() => {}}
+              onInstanceVidavegasBrSignup={() => {}}
+              onBluffbetSignup={() => {}}
+              onVidavegasLatamSignup={() => {}}
+              onJackburstSignup={() => {}}
             />
           )}
         </div>

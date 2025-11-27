@@ -31,7 +31,11 @@ export default function Root() {
           type={modalType}
           onClose={() => setModalType(null)}
           onInstance1Signup={() => {}}
-          onInstance2Signup={() => {}}   // ← FIX
+          onInstance2Signup={() => {}} 
+          onInstanceVidavegasBrSignup={() => {}}
+          onBluffbetSignup={() => {}}
+          onVidavegasLatamSignup={() => {}}
+          onJackburstSignup={() => {}}
         />
       )}
 

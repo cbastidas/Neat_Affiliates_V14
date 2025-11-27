@@ -22,6 +22,10 @@ interface Props {
   onClose: () => void;
   onInstance1Signup: () => void;
   onInstance2Signup: () => void; 
+  onInstanceVidavegasBrSignup: () => void;
+  onBluffbetSignup: () => void;
+  onVidavegasLatamSignup: () => void;
+  onJackburstSignup: () => void;
 }
 
 
@@ -37,6 +41,10 @@ export default function LoginSignupModal({
   onClose,
   onInstance1Signup,
   onInstance2Signup,
+  onInstanceVidavegasBrSignup,
+  onBluffbetSignup,
+  onVidavegasLatamSignup,
+  onJackburstSignup,
 }: Props) {
   const [authLinks, setAuthLinks] = useState<AuthLink[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
@@ -57,6 +65,7 @@ export default function LoginSignupModal({
     const { data: brandData } = await supabase
       .from('brands')
       .select('id, name, group');
+      
 
     if (authData) setAuthLinks(authData);
     if (brandData) setBrands(brandData);
@@ -74,9 +83,32 @@ export default function LoginSignupModal({
 
   if (!isOpen) return null;
 
+    // Close modal on ESC key
+    useEffect(() => {
+      if (!isOpen) return;
+  
+      const handler = (e: KeyboardEvent) => {
+        if (e.key === "Escape") onClose();
+      };
+  
+      document.addEventListener("keydown", handler);
+      return () => document.removeEventListener("keydown", handler);
+    }, [isOpen, onClose]);
+  
+    if (!isOpen) return null;
+
   return createPortal(
-    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-[9999]">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative">
+    <div
+      className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-[9999]"
+      onClick={(e) => {
+        // Close only if clicking the overlay, not the modal content
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div
+        className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative"
+        role="dialog"
+      >
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -101,6 +133,7 @@ export default function LoginSignupModal({
 
             return (
               <div
+
                 key={instance}
                 className="block"
                 onClick={(e) => {
@@ -118,6 +151,37 @@ export default function LoginSignupModal({
                     onInstance2Signup();   // opens ThroneSignupModal
                     return;
                   }
+
+                  if (instance === "Vidavegas - BR" && type === "signup") {
+                    e.preventDefault();
+                    onClose();
+                    onInstanceVidavegasBrSignup();
+                    return;
+                  }
+
+                  if (instance === "Bluffbet" && type === "signup") {
+                    e.preventDefault();
+                    onClose();
+                    onBluffbetSignup();
+                    return;
+                  }
+
+                  if (instance === "Vidavegas - Latam" && type === "signup") {
+                    e.preventDefault();
+                    onClose();
+                    onVidavegasLatamSignup();
+                    return;
+                  }
+
+                  if (instance === "Jackburst" && type === "signup") {
+                    e.preventDefault();
+                    onClose();
+                    onJackburstSignup();
+                    return;
+                  }
+
+
+
 
 
                   // Normal behavior

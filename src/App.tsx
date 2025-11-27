@@ -22,6 +22,10 @@ import Testimonials from './Testimonials';
 // NEW: modal for full instance signup form
 import RealmSignupModal from './RealmSignupModal';
 import ThroneSignupModal from './ThroneSignupModal';
+import VidavegasBrSignupModal from './VidavegasBrSignupModal';
+import BluffbetSignupModal from './BluffbetSignupModal';
+import VidavegasLatamSignupModal from './VidavegasLatamSignupModal';
+import JackburstSignupModal from './JackburstSignupModal';
 
 
 
@@ -37,6 +41,13 @@ export default function App() {
   const [openInstance1Form, setOpenInstance1Form] = useState(false);
   const [openThroneForm, setOpenThroneForm] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
+  const [openVidavegasBrForm, setOpenVidavegasBrForm] = useState(false);
+  const [openBluffbetSignup, setOpenBluffbetSignup] = useState(false);
+  const [openVidavegasLatam, setOpenVidavegasLatam] = useState(false);
+  const [openJackburstSignup, setOpenJackburstSignup] = useState(false);
+
+
+
 
     const toggleGroup = (groupName: string) => {
     setExpandedGroups((prev) => ({
@@ -424,6 +435,11 @@ export default function App() {
               onClose={() => setModalType(null)}
               onInstance1Signup={() => setOpenInstance1Form(true)}  // 🔥 NEW
               onInstance2Signup={() => setOpenThroneForm(true)}
+              onInstanceVidavegasBrSignup={() => setOpenVidavegasBrForm(true)}
+              onBluffbetSignup={() => setOpenBluffbetSignup(true)}
+              onVidavegasLatamSignup={() => setOpenVidavegasLatam(true)}
+              onJackburstSignup={() => setOpenJackburstSignup(true)}
+
             />
           )}
       </div>
@@ -508,6 +524,28 @@ export default function App() {
   isOpen={openThroneForm}
   onClose={() => setOpenThroneForm(false)}
 />
+
+<VidavegasBrSignupModal
+  isOpen={openVidavegasBrForm}
+  onClose={() => setOpenVidavegasBrForm(false)}
+/>
+
+<BluffbetSignupModal
+  isOpen={openBluffbetSignup}
+  onClose={() => setOpenBluffbetSignup(false)}
+/>
+
+<VidavegasLatamSignupModal
+  isOpen={openVidavegasLatam}
+  onClose={() => setOpenVidavegasLatam(false)}
+/>
+
+<JackburstSignupModal
+  isOpen={openJackburstSignup}
+  onClose={() => setOpenJackburstSignup(false)}
+/>
+
+
 
 
     </main>

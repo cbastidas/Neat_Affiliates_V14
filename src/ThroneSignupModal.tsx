@@ -35,9 +35,30 @@ const ThroneSignupModal: React.FC<Props> = ({ isOpen, onClose }) => {
       fetchThroneBrands();
     }, [isOpen]);
 
+      // Close modal on ESC key
+      useEffect(() => {
+        if (!isOpen) return;
+    
+        const handler = (e: KeyboardEvent) => {
+          if (e.key === "Escape") onClose();
+        };
+    
+        document.addEventListener("keydown", handler);
+        return () => document.removeEventListener("keydown", handler);
+      }, [isOpen, onClose]);
+    
+      if (!isOpen) return null;
+
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50">
+        <div
+          className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50"
+          onClick={(e) => {
+            // Close only when clicking background, not the modal content
+            if (e.target === e.currentTarget) onClose();
+          }}
+        >
+
             <div className="bg-white w-[95%] max-w-4xl max-h-[90vh] overflow-y-scroll rounded-xl shadow-xl p-8 relative">
 
                 {/* Close button */}

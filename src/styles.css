@@ -217,3 +217,17 @@
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+.collapse-wrapper {
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.35s ease;
+}
+
+.collapse-open {
+  max-height: 2000px; 
+  opacity: 1;
+}
+
+.collapse-closed {
+  max-height: 0px;
+  opacity: 0;
+}

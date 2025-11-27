@@ -19,6 +19,22 @@ export default function ContactEmailModal({ isOpen, onClose }: Props) {
     }
   }, [isOpen]);
 
+   useEffect(() => {
+  if (!isOpen) return;
+
+  const handleEsc = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      onClose();
+    }
+  };
+
+  document.addEventListener("keydown", handleEsc);
+
+  return () => {
+    document.removeEventListener("keydown", handleEsc);
+  };
+}, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const validate = () => {
@@ -53,17 +69,24 @@ export default function ContactEmailModal({ isOpen, onClose }: Props) {
     onClose();
   };
 
+ 
+
+
   return (
     <div
-      className="fixed inset-0 z-[9999] bg-black/40 flex items-center justify-center px-4"
+      className="fixed inset-0 z-[9999] bg-black/40 flex items-end justify-start"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
       <div
         ref={dialogRef}
-        className="w-full max-w-md rounded-2xl bg-white shadow-xl relative p-6"
+        className="bg-white shadow-xl relative p-6 animate-slideInLeft
+                    rounded-2xl
+                    w-full max-w-[360px] mx-auto
+                    md:w-[380px] md:mx-0"
         role="dialog"
+        style={{ marginTop: "40px", marginBottom: "20px", borderRadius: "20px", ...(window.innerWidth >= 768 && { marginLeft: "20px" }) }}
         aria-modal="true"
         aria-labelledby="contact-support-title"
       >

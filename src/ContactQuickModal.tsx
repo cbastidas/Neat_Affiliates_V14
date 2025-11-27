@@ -57,12 +57,12 @@ export default function ContactQuickModal({ isOpen, instance, onClose }: Props) 
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[9999] bg-black/40 flex items-center justify-center px-4"
+      className="fixed inset-0 z-[9999] bg-black/40 flex items-center justify-start"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="w-full max-w-2xl rounded-2xl bg-white shadow-xl relative">
+      <div className="h-full w-[380px] bg-white shadow-xl relative animate-slideInLeft rounded-none">
         {/* Close */}
         <button
           onClick={onClose}

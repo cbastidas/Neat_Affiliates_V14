@@ -25,10 +25,6 @@ import ThroneSignupModal from './ThroneSignupModal';
 
 
 
-
-
-
-
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [brands, setBrands] = useState<any[]>([]);
@@ -425,6 +421,7 @@ export default function App() {
     onClick={() => setIsContactEmailOpen(true)}
     className="
       fixed left-4 
+      bottom-6
       bottom-[calc(1rem+env(safe-area-inset-bottom))] 
       z-[10000] 
       md:hidden 
@@ -432,7 +429,7 @@ export default function App() {
       rounded-full 
       bg-green-600 
       shadow-lg 
-      flex items-center justify-center 
+      flex items-center justify-center
       text-2xl 
       hover:bg-green-800 
       active:scale-[0.98] 

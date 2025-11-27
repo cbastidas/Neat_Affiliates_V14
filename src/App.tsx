@@ -36,6 +36,14 @@ export default function App() {
   const [isContactEmailOpen, setIsContactEmailOpen] = useState(false);
   const [openInstance1Form, setOpenInstance1Form] = useState(false);
   const [openThroneForm, setOpenThroneForm] = useState(false);
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
+
+    const toggleGroup = (groupName: string) => {
+    setExpandedGroups((prev) => ({
+      ...prev,
+      [groupName]: !prev[groupName],
+    }));
+  };
 
   
 
@@ -302,25 +310,39 @@ export default function App() {
                         </div>
 
             
-            <div className="hidden md:grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center bg-white rounded-2xl border">
-              {brands.map((brand) => (
-                <BrandCard
-                  key={brand.id}
-                  id={brand.id}
-                  logoUrl={brand.logo_url}
-                  name={brand.name}
-                  commissionTiers={brand.commission_tiers || []}
-                  commissionType={brand.commission_type}
-                  //about={brand.about}
-                  isVisible={brand.is_visible}
-                  commission_tiers_label={brand.commission_tiers_label}
-                  onSave={() => {}}
-                  isPublicView={true} // 👈 IMPORTANT: Public Mode
-                  signupUrl={getSignupForBrand(brand)}
-                  //onLogoClick={() => openContactFor(brand.group)}
-                />
-              ))}
-            </div>
+           {/* Desktop cards */}
+        <div className="hidden md:flex flex-col items-center bg-white rounded-2xl border">
+                              
+          {/* Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center w-full p-6">
+    {(expandedGroups[groupName] ? brands : brands.slice(0, 3)).map((brand) => (
+      <BrandCard
+        key={brand.id}
+        id={brand.id}
+        logoUrl={brand.logo_url}
+        name={brand.name}
+        commissionTiers={brand.commission_tiers || []}
+        commissionType={brand.commission_type}
+        isVisible={brand.is_visible}
+        commission_tiers_label={brand.commission_tiers_label}
+        onSave={() => {}}
+        isPublicView={true}
+        signupUrl={getSignupForBrand(brand)}
+      />
+    ))}
+          </div>
+          
+          {/* Toggle Button */}
+          {brands.length > 3 && (
+            <button
+              onClick={() => toggleGroup(groupName)}
+              className="my-4 px-6 py-2 rounded-full bg-purple-600 text-white font-semibold hover:bg-purple-700 transition"
+            >
+              {expandedGroups[groupName] ? "Show Less" : "Show All"}
+            </button>
+          )}
+        </div>
+
         </section>
                  )
               ))}

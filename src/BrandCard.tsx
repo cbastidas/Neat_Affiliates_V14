@@ -129,18 +129,37 @@ export default function BrandCard({
     <div className="brand-card mx-auto relative hover:shadow-lg transition hover:border-purple-300">
       <div className="flex justify-between items-center mb-2">
 
-          <img src={previewUrl} alt={name} className="h-8 md:h-10 object-contain max-w-full" style={{ maxHeight: 48 }} />
+          <img
+            src={previewUrl}
+            alt={name}
+            className="h-8 md:h-10 object-contain"
+            style={{ maxHeight: 48, maxWidth: 110 }}
+          />
 
+
+        {/* Public View Join Button */}
         {isPublicView && signupUrl && (
-        <a
-          href={signupUrl}
-          target="_blank"
-          rel="noreferrer"
-          className="font-bold inline-flex items-center justify-center rounded-full bg-green-600 px-4 py-1.5 text-white text-sm font-semibold hover:bg-green-800 transition"
-        >
-          Join Now
-        </a>
-      )}
+          <div className="flex justify-center mt-2 mb-3">
+            <a
+              href={signupUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="
+                inline-flex items-center justify-center
+                h-10 w-28
+                bg-green-600
+                text-white text-sm font-semibold
+                rounded-full
+                shadow
+                hover:bg-green-700
+                transition
+              "
+            >
+              Join Now
+            </a>
+          </div>
+        )}
+
 
         {!isPublicView &&(
             

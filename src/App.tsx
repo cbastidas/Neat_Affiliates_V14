@@ -161,8 +161,18 @@ const showMore = (groupName: string, maxExtra: number) => {
 };
 
 const showLess = (groupName: string) => {
+  // collapse extra cards
   setVisibleExtra(prev => ({ ...prev, [groupName]: 0 }));
+
+  // smooth scroll to CommissionRate header after collapse
+  setTimeout(() => {
+    const section = document.getElementById("CommissionRate");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, 300); // waits 300ms so collapse looks natural
 };
+
 
 
 

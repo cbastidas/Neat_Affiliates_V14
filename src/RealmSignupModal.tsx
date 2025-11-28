@@ -57,9 +57,24 @@ useEffect(() => {
           }}
         >
             {/* Modal Container */}
-            <div 
-                className="bg-white w-full max-w-3xl max-h-[88vh] overflow-y-auto rounded-2xl shadow-xl p-8 relative"
-            >
+            <div
+                className="
+                  bg-white 
+                  w-full 
+                  max-w-3xl 
+                  max-h-[88vh] 
+                  overflow-y-auto 
+                  rounded-2xl 
+                  shadow-xl 
+                  p-6 
+                  md:p-8 
+                  relative 
+                  overflow-x-hidden 
+                  box-border
+                "
+                style={{ minWidth: 0 }}
+              >
+
                 {/* Close button */}
                 <button 
                     className="absolute top-3 right-3 text-black text-2xl"
@@ -78,13 +93,13 @@ useEffect(() => {
                 </p>
 
                 {/* 🔹 NEW: Realm logos from Supabase */}
-                <div className="flex flex-wrap justify-center gap-6 mb-8">
+                <div className="w-full flex flex-wrap justify-center gap-4 md:gap-6 mt-4 mb-8">
                   {realmBrands.map((brand) => (
                       <img
                         key={brand.id}
                         src={brand.logo_url}
                         alt={brand.name}
-                        className="h-12 w-auto object-contain"
+                        className="h-10 md:h-12 w-auto object-contain flex-shrink-0"
                       />
                   ))}
                 </div>
@@ -93,7 +108,7 @@ useEffect(() => {
                 <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                     {/* Login Username */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">
                             * Login username
                         </label>
@@ -108,7 +123,7 @@ useEffect(() => {
                     </div>
 
                     {/* Password */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">
                             * Login password
                         </label>
@@ -123,7 +138,7 @@ useEffect(() => {
                     </div>
 
                     {/* Confirm Password */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">
                             * Confirm password
                         </label>
@@ -135,7 +150,7 @@ useEffect(() => {
                     </div>
 
                     {/* Email */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">* Email address</label>
                         <input 
                             className="border rounded p-2"
@@ -145,7 +160,7 @@ useEffect(() => {
                     </div>
 
                     {/* Country */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">* Country</label>
                         <select className="border rounded p-2">
                             <option value="">Select a country</option>
@@ -163,96 +178,65 @@ useEffect(() => {
                     </div>
 
                     {/* First Name */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">* First Name</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
                     {/* Last Name */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">* Last Name</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
                     {/* Date of birth */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">* Date of Birth</label>
                         <input className="border rounded p-2" type="date" />
                     </div>
 
                     {/* Teams */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">Teams (Skype)</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
                     {/* Telegram */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">Telegram</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
                     {/* Street */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">Street Address</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
                     {/* City */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">City</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
                     {/* Company */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">Company</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
                     {/* Phone */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">Phone</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
                     {/* Site URL */}
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">* Site URL</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
-                    {/* Terms of Use */}
-                    <div className="col-span-2 mt-4">
-                      <label className="font-semibold text-red-600">* Terms of use</label>
-                      <p className="text-sm text-gray-600">
-                        Please read the{" "}
-                        <a 
-                          href="https://example.com" 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-purple-600 underline hover:text-purple-800"
-                        >
-                          Terms of Use
-                        </a>{" "}
-                        before agreeing.
-                      </p>
-
-                      <div className="flex items-center gap-2 mt-2">
-                        <input type="checkbox" />
-                        <label className="text-sm">
-                          I agree with the NeatAffiliates{" "}
-                          <a
-                            href="https://example.com"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-purple-600 underline hover:text-purple-800"
-                          >
-                            Terms of Use
-                          </a>
-                        </label>
-                      </div>
-                    </div>
 
                     {/* Payment Instructions */}
                     <div className="col-span-2 mt-6">
@@ -482,12 +466,44 @@ useEffect(() => {
                       </div>
                     </div>
 
+                                       {/* Terms of Use */}
+                    <div className="col-span-2 mt-4">
+                      <label className="font-semibold text-red-600">* Terms of use</label>
+                      <p className="text-sm text-gray-600">
+                        Please read the{" "}
+                        <a 
+                          href="https://example.com" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-purple-600 underline hover:text-purple-800"
+                        >
+                          Terms of Use
+                        </a>{" "}
+                        before agreeing.
+                      </p>
+
+                      <div className="flex items-center gap-2 mt-2">
+                        <input type="checkbox" />
+                        <label className="text-sm">
+                          I agree with the NeatAffiliates{" "}
+                          <a
+                            href="https://example.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-purple-600 underline hover:text-purple-800"
+                          >
+                            Terms of Use
+                          </a>
+                        </label>
+                      </div>
+                    </div>
+
 
                     {/* Submit */}
                     <div className="col-span-2 mt-6 flex justify-center">
                         <button 
                             type="submit"
-                            className="bg-purple-700 hover:bg-purple-800 text-white px-10 py-3 rounded-full"
+                            className="font-semibold bg-purple-700 hover:bg-purple-800 text-white px-10 py-3 rounded-full"
                         >
                             Signup
                         </button>

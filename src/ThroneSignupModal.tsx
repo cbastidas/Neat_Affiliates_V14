@@ -78,13 +78,13 @@ const ThroneSignupModal: React.FC<Props> = ({ isOpen, onClose }) => {
                 </p>
 
                 {/* LOGOS */}
-                <div className="flex flex-wrap justify-center gap-6 mb-8">
+                <div className="w-full flex flex-wrap justify-center gap-4 md:gap-6 mt-4 mb-8">
                     {throneBrands.map((brand) => (
                         <img
                             key={brand.id}
                             src={brand.logo_url}
                             alt={brand.name}
-                            className="h-12 w-auto object-contain"
+                            className="h-10 md:h-12 w-auto object-contain flex-shrink-0"
                         />
                     ))}
                 </div>
@@ -94,29 +94,29 @@ const ThroneSignupModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
                     {/* EVERYTHING HERE STAYS EXACTLY AS REALM — NO CHANGES */}
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">* Login username</label>
                         <input className="border rounded p-2" type="text" />
                         <small>Please ensure your username contains only letters, numbers and underscores.</small>
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">* Login password</label>
                         <input className="border rounded p-2" type="password" />
                         <small>Must contain one uppercase letter and one number.</small>
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">* Confirm password</label>
                         <input className="border rounded p-2" type="password" />
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">* Email address</label>
                         <input className="border rounded p-2" type="email" />
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">* Country</label>
                         <select className="border rounded p-2">
                             <option value="">Select a country</option>
@@ -133,68 +133,56 @@ const ThroneSignupModal: React.FC<Props> = ({ isOpen, onClose }) => {
                         <label>Email subscription</label>
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">* First Name</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">* Last Name</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">* Date of Birth</label>
                         <input className="border rounded p-2" type="date" />
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">Skype</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">Telegram</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">Street Address</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">City</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">Company</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">Phone</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
-                    <div className="flex flex-col">
+                    <div className="flex flex-col col-span-2">
                         <label className="font-semibold">* Site URL</label>
                         <input className="border rounded p-2" type="text" />
                     </div>
 
-                    {/* Terms of use */}
-                    <div className="col-span-2 mt-4">
-                        <label className="font-semibold text-red-600">* Terms of use</label>
-                        <p className="text-sm text-gray-600">
-                            Please read the Terms of Use before agreeing.
-                        </p>
-
-                        <div className="flex items-center gap-2 mt-2">
-                            <input type="checkbox" />
-                            <label className="text-sm">I agree with the NeatAffiliates Terms of Use</label>
-                        </div>
-                    </div>
 
                     {/* PAYMENT INSTRUCTIONS — SAME AS REALM */}
                     <div className="col-span-2 mt-6">
@@ -456,12 +444,24 @@ const ThroneSignupModal: React.FC<Props> = ({ isOpen, onClose }) => {
   </div>
 </div>
 
+                                            {/* Terms of use */}
+                    <div className="col-span-2 mt-4">
+                        <label className="font-semibold text-red-600">* Terms of use</label>
+                        <p className="text-sm text-gray-600">
+                            Please read the Terms of Use before agreeing.
+                        </p>
+
+                        <div className="flex items-center gap-2 mt-2">
+                            <input type="checkbox" />
+                            <label className="text-sm">I agree with the NeatAffiliates Terms of Use</label>
+                        </div>
+                    </div>
 
                     {/* Submit */}
                     <div className="col-span-2 mt-6 flex justify-center">
                         <button
                             type="submit"
-                            className="bg-purple-700 hover:bg-purple-800 text-white px-10 py-3 rounded-full"
+                            className="font-semibold bg-purple-700 hover:bg-purple-800 text-white px-10 py-3 rounded-full"
                         >
                             Signup
                         </button>

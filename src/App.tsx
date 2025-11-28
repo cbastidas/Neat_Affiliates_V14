@@ -40,21 +40,16 @@ export default function App() {
   const [isContactEmailOpen, setIsContactEmailOpen] = useState(false);
   const [openInstance1Form, setOpenInstance1Form] = useState(false);
   const [openThroneForm, setOpenThroneForm] = useState(false);
-  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({});
+  // Number of extra brands currently visible per group
+  const [visibleExtra, setVisibleExtra] = useState<Record<string, number>>({});
   const [openVidavegasBrForm, setOpenVidavegasBrForm] = useState(false);
   const [openBluffbetSignup, setOpenBluffbetSignup] = useState(false);
   const [openVidavegasLatam, setOpenVidavegasLatam] = useState(false);
   const [openJackburstSignup, setOpenJackburstSignup] = useState(false);
+  
 
 
 
-
-    const toggleGroup = (groupName: string) => {
-    setExpandedGroups((prev) => ({
-      ...prev,
-      [groupName]: !prev[groupName],
-    }));
-  };
 
   
 
@@ -152,6 +147,23 @@ export default function App() {
     brands: brands.filter((b) => b.group === groupName),
   };
 });
+
+const showMore = (groupName: string, maxExtra: number) => {
+  setVisibleExtra(prev => {
+    const current = prev[groupName] || 0;
+    const next = current + 3;
+
+    if (next >= maxExtra) {
+      return { ...prev, [groupName]: maxExtra }; // reached the end
+    }
+    return { ...prev, [groupName]: next };
+  });
+};
+
+const showLess = (groupName: string) => {
+  setVisibleExtra(prev => ({ ...prev, [groupName]: 0 }));
+};
+
 
 
   // return
@@ -343,16 +355,13 @@ export default function App() {
                 ))}
               </div>
               
-              {/* Collapsible animated section */}
+              {/* PROGRESSIVE LOAD OF EXTRA BRANDS */}
               {brands.length > 3 && (
-                <div
-                  className={
-                    "collapse-wrapper w-full px-6 " +
-                    (expandedGroups[groupName] ? "collapse-open" : "collapse-closed")
-                  }
-                >
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center w-full mt-2">
-                    {brands.slice(3).map((brand) => (
+                <div className="w-full px-6 mt-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center">
+
+                    {/* compute how many extra brands are allowed */}
+                    {brands.slice(3, 3 + (visibleExtra[groupName] || 0)).map((brand) => (
                       <BrandCard
                         key={brand.id}
                         id={brand.id}
@@ -367,19 +376,35 @@ export default function App() {
                         signupUrl={getSignupForBrand(brand)}
                       />
                     ))}
+
+                  </div>
+
+                  {/* BUTTONS */}
+                  <div className="flex justify-center gap-4 mt-4 my-3">
+
+                    {/* SHOW MORE — only if there are more to reveal */}
+                    {(visibleExtra[groupName] || 0) < brands.length - 3 && (
+                      <button
+                        onClick={() => showMore(groupName, brands.length - 3)}
+                        className="px-6 py-2 rounded-full bg-purple-600 text-white font-semibold hover:bg-purple-700 transition"
+                      >
+                        Show More
+                      </button>
+                    )}
+
+                    {/* SHOW LESS — only visible if something is expanded */}
+                    {(visibleExtra[groupName] || 0) > 0 && (
+                      <button
+                        onClick={() => showLess(groupName)}
+                        className="px-6 py-2 rounded-full bg-gray-200 text-gray-800 font-semibold hover:bg-gray-300 transition"
+                      >
+                        Show Less
+                      </button>
+                    )}
                   </div>
                 </div>
               )}
 
-              {/* Toggle button */}
-              {brands.length > 3 && (
-                <button
-                  onClick={() => toggleGroup(groupName)}
-                  className="my-4 px-6 py-2 rounded-full bg-purple-600 text-white font-semibold hover:bg-purple-700 transition"
-                >
-                  {expandedGroups[groupName] ? "Show Less" : "Show All"}
-                </button>
-              )}
             </div>
 
 

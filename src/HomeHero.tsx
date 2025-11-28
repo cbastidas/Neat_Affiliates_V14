@@ -19,8 +19,9 @@ export default function HomeHero({ onSignup, onScrollNext }: Props) {
     >
       <div className="mx-auto max-w-5xl px-4 py-16 sm:py-24 text-center">
         <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-gray-900">
-          Grow your affiliate revenue with Neat Affiliates
+          Grow your affiliate revenue with <br></br>Neat Affiliates
         </h1>
+
         <p className="mt-4 text-lg text-gray-600">
           Tools, reporting and flexible deals to help you scale—fast.
         </p>

@@ -56,9 +56,9 @@ useEffect(() => {
             if (e.target === e.currentTarget) onClose();
           }}
         >
-
+            {/* Modal Container */}
             <div 
-                className="bg-white w-[95%] max-w-4xl max-h-[90vh] overflow-y-scroll rounded-xl shadow-xl p-8 relative"
+                className="bg-white w-full max-w-3xl max-h-[88vh] overflow-y-auto rounded-2xl shadow-xl p-8 relative"
             >
                 {/* Close button */}
                 <button 

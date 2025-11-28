@@ -116,44 +116,46 @@ export default function WhyJoin() {
             ))}
           </div>
 
-          {/* ------------------------------------------------------------
-              DESKTOP VERSION — 3 columns
-          ------------------------------------------------------------ */}
-          <div className="hidden md:grid grid-cols-3 gap-6">
-            {items.map((item, index) => (
-              <div
-                key={item.id}
-                className="
-                  p-8 bg-white shadow-md rounded-xl border border-gray-200
-                  hover:shadow-lg hover:border-purple-300 transition text-center opacity-0
-                "
-                style={{
-                  animation: "slideIn 1.2s ease-out forwards",
-                  animationDelay: `${index}s`,
-                }}
-              >
-                {/* Icon */}
-                {item.emoji_url && (
-                  <img
-                    src={item.emoji_url}
-                    alt="Icon"
-                    className="mx-auto mb-4"
-                    style={{ width: 60, height: 60 }}
-                  />
-                )}
 
-                {/* Title */}
-                <h3 className="text-gray-800 font-bold text-lg mb-2">
-                  {item.title}
-                </h3>
+{/* ------------------------------------------------------------
+    DESKTOP VERSION — same size cards, last row centered
+------------------------------------------------------------ */}
+<div className="hidden md:flex flex-wrap justify-center gap-6 w-full">
+  {items.map((item, index) => (
+    <div
+      key={item.id}
+      className="
+        p-8 bg-white shadow-md rounded-xl border border-gray-200
+        hover:shadow-lg hover:border-purple-300 transition text-center opacity-0
+        w-[300px]
+      "
+      style={{
+        animation: "slideIn 1.2s ease-out forwards",
+        animationDelay: `${index * 0.2}s`,
+      }}
+    >
+      {/* Icon */}
+      {item.emoji_url && (
+        <img
+          src={item.emoji_url}
+          alt="Icon"
+          className="mx-auto mb-4"
+          style={{ width: 60, height: 60 }}
+        />
+      )}
 
-                {/* Description */}
-                <p className="text-gray-600 text-sm px-4 leading-relaxed">
-                  {item.description}
-                </p>
-              </div>
-            ))}
-          </div>
+      {/* Title */}
+      <h3 className="text-gray-800 font-bold text-lg mb-2">
+        {item.title}
+      </h3>
+
+      {/* Description */}
+      <p className="text-gray-600 text-sm px-4 leading-relaxed">
+        {item.description}
+      </p>
+    </div>
+  ))}
+</div>
 
           {/* ------------------------------------------------------------
               CTA BUTTON

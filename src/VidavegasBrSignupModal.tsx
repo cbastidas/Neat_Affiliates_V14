@@ -177,11 +177,12 @@ const VidavegasBrSignupModal: React.FC<Props> = ({ isOpen, onClose }) => {
             <label className="font-semibold">* Website URL</label>
             <input className="border rounded p-2" />
           </div>
+          <br></br>
 
           {/* Marketing Method */}
-          <div className="flex flex-col md:col-span-2 mt-4">
+          <div className="md:col-span-2 flex flex-col w-full">
             <label className="font-semibold">* How will you market us?</label>
-            <div className="flex gap-6 mt-1">
+            <div className="flex flex-wrap gap-x-6 gap-y-2">
               <label className="flex items-center gap-2">
                 <input type="radio" name="market" /> Website
               </label>

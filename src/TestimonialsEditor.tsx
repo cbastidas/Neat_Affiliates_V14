@@ -5,13 +5,14 @@ interface testimonials {
   id: string;
   title: string;
   content: string;
+  link: string;
 }
 
 export default function TestimonialsEditor() {
   const [testimonials, setTestimonials] = useState<testimonials[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editedTestimonial, setEditedTestimonial] = useState<Partial<testimonials>>({});
-  const [newTestimonial, setNewTestimonial] = useState({ title: '', content: '' });
+  const [newTestimonial, setNewTestimonial] = useState({ title: '', link: '', content: ''});
 
   const fetchTestimonials = async () => {
     const { data, error } = await supabase.from('testimonials').select('*').order('created_at', { ascending: false });
@@ -23,9 +24,14 @@ export default function TestimonialsEditor() {
   }, []);
 
   const handleAdd = async () => {
-    const { error } = await supabase.from('testimonials').insert(newTestimonial);
+    const { error } = await supabase.from('testimonials').insert({
+    title: newTestimonial.title,
+    content: newTestimonial.content,
+    link: newTestimonial.link || null,
+  });
+
     if (!error) {
-      setNewTestimonial({ title: '', content: '' });
+      setNewTestimonial({ title: '', link: '', content: '' });
       fetchTestimonials();
     } else {
       alert('Error adding testimonial');
@@ -69,6 +75,14 @@ export default function TestimonialsEditor() {
           onChange={(e) => setNewTestimonial({ ...newTestimonial, title: e.target.value })}
           className="border px-3 py-2 rounded"
         />
+        {/* NEW FIELD */}
+        <input
+          type="text"
+          placeholder="Page Link (optional)"
+          value={newTestimonial.link || ""}
+          onChange={(e) => setNewTestimonial({ ...newTestimonial, link: e.target.value })}
+          className="border px-3 py-2 rounded"
+        />
         <textarea
           placeholder="Content"
           value={newTestimonial.content}
@@ -95,6 +109,14 @@ export default function TestimonialsEditor() {
                   onChange={(e) => setEditedTestimonial({ ...editedTestimonial, title: e.target.value })}
                   className="w-full border px-2 py-1 mb-2 rounded"
                 />
+                {/* NEW FIELD */}
+                <input
+                  type="text"
+                  placeholder="Page Link"
+                  value={editedTestimonial.link || ""}
+                  onChange={(e) => setEditedTestimonial({ ...editedTestimonial, link: e.target.value })}
+                  className="border px-3 py-2 rounded"
+                />
                 <textarea
                   value={editedTestimonial.content || ''}
                   onChange={(e) => setEditedTestimonial({ ...editedTestimonial, content: e.target.value })}
@@ -116,11 +138,12 @@ export default function TestimonialsEditor() {
             ) : (
               <>
                 <h3 className="text-lg font-bold mb-1">{t.title}</h3>
+                <h2 className="text-lg font-bold mb-1">{t.link}</h2>
                 <p className="text-gray-700 mb-2">{t.content}</p>
                 <button
                   onClick={() => {
                     setEditingId(t.id);
-                    setEditedTestimonial({ title: t.title, content: t.content });
+                    setEditedTestimonial({ title: t.title, content: t.content, link: t.link });
                   }}
                   className="text-blue-600 mr-2"
                 >

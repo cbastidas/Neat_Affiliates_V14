@@ -8,6 +8,7 @@ interface Testimonial {
   id: string;
   title: string;
   content: string;
+  link: string;
 }
 
 export default function Testimonials() {
@@ -208,12 +209,25 @@ export default function Testimonials() {
               "
             >
               <div className="bg-white p-6 rounded-xl shadow border border-gray-100 text-left h-full flex flex-col hover:border-purple-300">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                <h3 className="text-xl font-semibold text-gray-800 mb-1">
                   {t.title}
-                </h3>
-                <p className="text-gray-700 leading-relaxed italic border-l-4 border-purple-300 pl-3">
-                  "{t.content}"
-                </p>
+                  </h3>
+
+                  {t.link && (
+                    <a
+                      href={t.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-purple-600 underline text-sm mb-3 block hover:text-purple-800"
+                    >
+                      Visit Page →
+                    </a>
+                  )}
+
+                  <p className="text-gray-700 leading-relaxed italic border-l-4 border-purple-300 pl-3">
+                    "{t.content}"
+                  </p>
+
               </div>
             </div>
           ))}

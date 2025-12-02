@@ -74,7 +74,7 @@ export default function ContactEmailModal({ isOpen, onClose }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] bg-black/40 flex items-end justify-start"
+      className="fixed inset-0 z-[9999] flex items-end justify-start"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}

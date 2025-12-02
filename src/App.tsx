@@ -365,6 +365,7 @@ const showLess = (groupName: string) => {
                           ...brand,
                           signup_url: getSignupForBrand(brand),
                         })) }
+                        handleOpenSignupMobile={handleOpenSignupModal}
                         />
                         </div>
 

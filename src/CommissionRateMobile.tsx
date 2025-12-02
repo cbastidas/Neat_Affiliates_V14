@@ -16,10 +16,12 @@ export type Brand = {
 };
 
 export default function CommissionRateMobile({
-  brands,
+  brands, 
+  handleOpenSignupMobile,
 }: {
   brands: Brand[];
   signupByInstance?: Record<string, string>;
+  handleOpenSignupMobile?: (brand: Brand) => void;
 }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
@@ -163,6 +165,7 @@ export default function CommissionRateMobile({
                   isPublicView={true}
                   group={b.group}
                   signupUrl={b.signup_url}
+                  onJoin={() => handleOpenSignupMobile?.(b)}
                 />
               </div>
             </div>

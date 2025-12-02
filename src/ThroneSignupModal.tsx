@@ -467,6 +467,34 @@ const ThroneSignupModal: React.FC<Props> = ({ isOpen, onClose }) => {
                         </button>
                     </div>
 
+                                        {/* Support Section */}
+                <div className="md:col-span-2 mt-10">
+                  <h3 className="text-xl font-semibold mb-4 text-center">Support</h3>
+
+                  <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+
+                    {/* Telegram */}
+                    <a
+                      href="https://t.me/neat_affiliates"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-purple-700 hover:text-purple-900 text-lg font-medium"
+                    >
+                      <span className="text-2xl">📨</span>
+                      Telegram: @neat_affiliates
+                    </a>
+
+                    {/* Email */}
+                    <a
+                      href="mailto:support@neataffiliates.com"
+                      className="flex items-center gap-2 text-purple-700 hover:text-purple-900 text-lg font-medium"
+                    >
+                      <span className="text-2xl">📧</span>
+                      Email: support@neataffiliates.com
+                    </a>
+
+                  </div>
+                </div>
                 </form>
             </div>
         </div>

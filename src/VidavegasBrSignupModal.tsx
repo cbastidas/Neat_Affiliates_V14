@@ -212,11 +212,29 @@ const VidavegasBrSignupModal: React.FC<Props> = ({ isOpen, onClose }) => {
           <div className="md:col-span-2 flex justify-center mt-6">
             <button
               type="submit"
-              className="bg-purple-700 hover:bg-yellow-600 text-white px-10 py-3 rounded-full"
+              className="font-semibold bg-purple-700 hover:bg-yellow-600 text-white px-10 py-3 rounded-full"
             >
               Signup
             </button>
           </div>
+
+          {/* Support Section */}
+            <div className="md:col-span-2 mt-8 justify-start">
+              <h2 className="text-xl font-semibold mb-2">Support</h2>
+
+              <div className="flex flex-col justify-start gap-1">
+
+                {/* Email */}
+                <a
+                  href="mailto:vidavegas@neataffiliates.com"
+                  className="flex items-center gap-2 text-purple-700 hover:text-purple-900 text-lg font-medium"
+                >
+                  <span className="text-2xl">📧</span>
+                  Email: vidavegas@neataffiliates.com
+                </a>
+
+              </div>
+            </div>
         </form>
       </div>
     </div>

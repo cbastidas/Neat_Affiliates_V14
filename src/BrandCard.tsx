@@ -18,6 +18,7 @@ interface BrandCardProps {
   isPublicView?: boolean;
   group?: string;
   signupUrl?: string;
+  onJoin?: () => void;
 };
 
 export default function BrandCard({
@@ -30,8 +31,8 @@ export default function BrandCard({
   isVisible,
   onSave,
   isPublicView = false,
-  group,
-  signupUrl,  
+  group, 
+  onJoin, 
   
   
 }: BrandCardProps) {
@@ -138,26 +139,18 @@ export default function BrandCard({
 
 
         {/* Public View Join Button */}
-        {isPublicView && signupUrl && (
-          <div className="flex justify-center mt-2 mb-3">
-            <a
-              href={signupUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="
-                inline-flex items-center justify-center
-                h-10 w-28
-                bg-green-600
-                text-white text-sm font-semibold
-                rounded-full
-                shadow
-                hover:bg-green-700
-                transition
-              "
-            >
-              Join Now
-            </a>
-          </div>
+        {isPublicView &&(
+          <button
+            onClick={onJoin}
+            className="
+              inline-flex items-center justify-center
+              h-10 w-28
+              bg-green-600
+              text-white text-sm font-semibold
+              rounded-full shadow
+              hover:bg-green-700 transition">
+            Join Now
+          </button>
         )}
 
 

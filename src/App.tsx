@@ -48,6 +48,32 @@ export default function App() {
   const [openJackburstSignup, setOpenJackburstSignup] = useState(false);
   
 
+  const handleOpenSignupModal = (brand: any) => {
+  const g = brand.group?.trim();
+
+  switch (g) {
+    case "Realm":
+      setOpenInstance1Form(true);
+      break;
+    case "Throne":
+      setOpenThroneForm(true);
+      break;
+    case "Vidavegas - BR":
+      setOpenVidavegasBrForm(true);
+      break;
+    case "Vidavegas - Latam":
+      setOpenVidavegasLatam(true);
+      break;
+    case "Bluffbet":
+      setOpenBluffbetSignup(true);
+      break;
+    case "Jackburst":
+      setOpenJackburstSignup(true);
+      break;
+    default:
+      console.warn("Unknown brand group:", g);
+  }
+};
 
 
 
@@ -360,7 +386,7 @@ const showLess = (groupName: string) => {
                     commission_tiers_label={brand.commission_tiers_label}
                     onSave={() => {}}
                     isPublicView={true}
-                    signupUrl={getSignupForBrand(brand)}
+                    onJoin={() => handleOpenSignupModal(brand)}
                   />
                 ))}
               </div>
@@ -383,7 +409,7 @@ const showLess = (groupName: string) => {
                         commission_tiers_label={brand.commission_tiers_label}
                         onSave={() => {}}
                         isPublicView={true}
-                        signupUrl={getSignupForBrand(brand)}
+                        onJoin={() => handleOpenSignupModal(brand)}
                       />
                     ))}
 

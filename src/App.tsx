@@ -248,8 +248,8 @@ const showLess = (groupName: string) => {
   {[
     'WhyJoin',
     'News',
-    'CommissionRate',
     'OurBrands',
+    'CommissionRate',
     'Contact',
     'FAQ',
   ].map((id) => (
@@ -293,8 +293,8 @@ const showLess = (groupName: string) => {
     {[
       { id: 'WhyJoin', label: 'Why Join' },
       { id: 'News', label: 'News' },
-      { id: 'CommissionRate', label: 'Commission Rate' },
       { id: 'OurBrands', label: 'Our Brands' },
+      { id: 'CommissionRate', label: 'Commission Rate' },
       //{ id: 'Contact', label: 'Contact' },
       { id: 'FAQ', label: 'FAQ' },
     ].map(({ id, label }) => (
@@ -341,6 +341,14 @@ const showLess = (groupName: string) => {
         {
           <NewsImage />
         }
+
+        
+        <div id="OurBrands" className="py-16">
+        {/* 🎯 Pass the onSignup function */}
+        <PublicBrandLogoGallery 
+          onSignup={() => setModalType('signup')} 
+        />
+        </div>
 
 {/* ✅ Commission Rate with dynamic cards */}
         <section id="CommissionRate" style={{ paddingTop: '4rem', paddingBottom: '4rem', borderWidth: '2px', borderRadius: '1rem', backgroundColor: 'white'}}>
@@ -451,13 +459,6 @@ const showLess = (groupName: string) => {
             </div>
           </div>  
         </section>
-
-        <div id="OurBrands" className="py-16">
-        {/* 🎯 Pass the onSignup function */}
-        <PublicBrandLogoGallery 
-          onSignup={() => setModalType('signup')} 
-        />
-        </div>
 
         {/* Contact Section
         {ui.contact_section !== false && (

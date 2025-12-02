@@ -51,8 +51,8 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
       <div className={`hidden md:flex gap-2 flex-wrap justify-end`}>
         {[
           'WhyJoin',
-          'CommissionRate',
           'Our Brands',
+          'CommissionRate',
           'Contact',
           'FAQ',
           'Login',
@@ -87,8 +87,8 @@ export default function Navbar({ onOpenModal }: NavbarProps) {
         <div className="md:hidden absolute top-16 left-0 w-full bg-white shadow-md px-6 py-4 flex flex-col gap-2 z-40">
           {[
             'WhyJoin',
-            'CommissionRate',
             'Our Brands',
+            'CommissionRate',
             'Contact',
             'FAQ',
             'Login',

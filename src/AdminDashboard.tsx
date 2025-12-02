@@ -9,6 +9,8 @@ import AuthEditor from './AuthEditor';
 import LogoVisibilityManager from './LogoVisibilityManager';
 import './styles.css';
 import SectionVisibilityToggle from "./SectionVisibilityToggle";
+import NewsImageEditor from "./NewsImageEditor";
+
 
 // ------------------------------------------------------
 // DND-KIT IMPORTS
@@ -289,6 +291,11 @@ export default function AdminDashboard() {
           <h2 className="text-2xl font-bold text-center mb-6">🔐 Login/Signup Admin Editor</h2>
           <AuthEditor />
         </section>
+
+        <section id="news">
+          <NewsImageEditor />
+        </section>
+
 
       </div>
     </div>

@@ -1,59 +1,70 @@
 import { useEffect, useState } from "react";
 import { supabase } from "./lib/supabaseClient";
 
-// Home section that shows a title, subtitle, and the latest news image from DB
 export default function NewsImage() {
-  const [src, setSrc] = useState<string | null>(null);
+  const [news, setNews] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch the latest row from `news` table
-    const load = async () => {
+    const fetchNews = async () => {
       setLoading(true);
 
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("news")
-        .select("image_url, created_at")
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
+        .select("*")
+        .eq("visible", true)
+        .order("created_at", { ascending: false });
 
-      // Set image source or null if not found
-      setSrc(data?.image_url ?? null);
+      if (error) {
+        console.error("Error loading news:", error.message);
+      } else {
+        setNews(data || []);
+      }
+
       setLoading(false);
     };
 
-    load();
+    fetchNews();
   }, []);
 
   return (
-    <section id="News">
-      <div className="mx-auto max-w-5xl px-4 md:px-6 text-center py-16 bg-white rounded-2xl border">
-        {/* Title */}
-        <h2 className="text-2xl sm:text-3xl font-bold text-purple-800 mb-2 underline decoration-purple-300 underline-offset-4">
-          Latest News
-        </h2>
+    <section
+      id="News"
+      className="py-16 mt-10 bg-white rounded-xl border shadow-sm px-6 max-w-4xl mx-auto"
+    >
+      <h2 className="text-3xl font-bold text-center mb-2 text-gray-900">
+        Latest News
+      </h2>
+      <p className="text-center text-gray-600 mb-8">
+        Stay up to date with our latest updates and announcements.
+      </p>
 
-        {/* Subtitle */}
-        <p className="text-gray-500 mb-8 text-base">
-          Stay up to date with our latest updates and announcements
+      {/* Loader */}
+      {loading && (
+        <p className="text-center text-gray-500">Loading news...</p>
+      )}
+
+      {/* No news available */}
+      {!loading && news.length === 0 && (
+        <p className="text-center text-gray-700 text-lg">
+          No news available at the moment. Please check back soon! 😊
         </p>
+      )}
 
-        {/* Image or placeholder */}
-        {loading ? (
-          <div className="text-gray-500">Loading image…</div>
-        ) : src ? (
-          <img
-            src={src}
-            alt="News and updates"
-            className="w-full h-auto rounded-2xl shadow border"
-            loading="lazy"
-          />
-        ) : (
-          <div className="text-gray-500 border rounded-xl p-8 text-center bg-white shadow">
-            No image has been set in <b>news.image_url</b>.
+      {/* News Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-6">
+        {news.map((item) => (
+          <div
+            key={item.id}
+            className="w-full rounded-xl overflow-hidden shadow hover:shadow-lg transition border bg-gray-50"
+          >
+            <img
+              src={item.image_url}
+              alt="News"
+              className="w-full h-56 object-cover"
+            />
           </div>
-        )}
+        ))}
       </div>
     </section>
   );

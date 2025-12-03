@@ -30,12 +30,17 @@ export default function NewsImage() {
   return (
     <section
       id="News"
-      className="py-16 mt-10 bg-white rounded-xl border shadow-sm px-6 max-w-4xl mx-auto"
+      className="py-16 mt-10 bg-white rounded-xl border shadow-sm px-6 max-w-4xl mx-auto
+      border-transparent
+      hover:border-purple-300
+      hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+      transition-all 
+      duration-300"
     >
       <h2 className="text-3xl font-bold text-center mb-2 text-gray-900">
         Latest News
       </h2>
-      <p className="text-center text-gray-600 mb-8">
+      <p className="text-center text-gray-600 mb-8 hover:font-bold transition">
         Stay up to date with our latest updates and announcements.
       </p>
 
@@ -46,7 +51,7 @@ export default function NewsImage() {
 
       {/* No news available */}
       {!loading && news.length === 0 && (
-        <p className="text-center text-gray-700 text-lg">
+        <p className="text-center text-gray-700 text-lg hover:text-purple-700 transition">
           No news available at the moment. Please check back soon! 😊
         </p>
       )}

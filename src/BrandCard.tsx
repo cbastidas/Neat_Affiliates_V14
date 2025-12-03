@@ -127,13 +127,21 @@ export default function BrandCard({
   };
 
   return (
-    <div className="brand-card mx-auto relative hover:shadow-lg transition hover:border-purple-300">
-      <div className="flex justify-between items-center mb-2">
+    <div className="brand-card mx-auto relative
+    border border-transparent
+    hover:font-bold
+    hover:border-purple-300
+    hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+    transition-all duration-300
+    rounded-2xl">
+      <div className="flex justify-between items-center mb-2
+      
+      ">
 
           <img
             src={previewUrl}
             alt={name}
-            className="h-8 md:h-10 object-contain"
+            className="h-8 md:h-10 object-contain hover:brightness-90 transition"
             style={{ maxHeight: 48, maxWidth: 110 }}
           />
 
@@ -148,6 +156,7 @@ export default function BrandCard({
               bg-green-600
               text-white text-sm font-semibold
               rounded-full shadow
+              hover:font-bold
               hover:bg-green-700 transition">
             Join Now
           </button>

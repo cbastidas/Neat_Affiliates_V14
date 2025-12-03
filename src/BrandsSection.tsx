@@ -36,9 +36,14 @@ export default function BrandLogoGallery({ onSignup }: BrandLogoGalleryProps) {
   if (logos.length === 0) return null;
 
   return (
-    <section className="py-12 bg-white overflow-hidden relative py-16 bg-white rounded-2xl border">
+    <section className="py-12 bg-white overflow-hidden relative py-16 bg-white rounded-2xl border
+    border-transparent
+    hover:border-purple-300
+    hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+    transition-all 
+    duration-300">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-2xl font-bold text-center mb-8 text-purple-700">Our Brands</h2>
+        <h2 className="text-2xl font-bold text-center mb-8 text-black-600">Our Brands</h2>
 
         <div className="relative w-full overflow-hidden">
           <div className="flex animate-marquee gap-8 w-max">

@@ -155,16 +155,21 @@ export default function Testimonials() {
   return (
     <section
       id="Testimonials"
-      className="py-20 px-4 text-center bg-gradient-to-b from-white to-gray-50"
+      className="py-2 px-3 sm:pt-16 text-center bg-gradient-to-b from-white to-gray-50
+      border border-transparent
+    hover:border-purple-300
+    hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+    transition-all duration-300
+    rounded-2xl"
     >
       <h2 className="text-4xl font-bold mb-4 text-purple-900">✨ Testimonials</h2>
-      <p className="text-lg text-gray-600 mb-12">
+      <p className="text-base text-gray-600 mb-6 hover:font-bold transition">
         Here is what our partners say about us.
       </p>
 
       <div className="max-w-6xl mx-auto relative">
 
-        {/* Flecha izquierda (solo desktop/tablet) */}
+        {/* Sliders onlyon Desktop */}
         <button
           onClick={prev}
           onMouseEnter={() => {
@@ -205,10 +210,14 @@ export default function Testimonials() {
                 testimonial-slide 
                 snap-start shrink-0 
                 w-full sm:w-1/2 lg:w-1/3 
-                px-4
+                px-3 sm:px-6 mb-4 
               "
             >
-              <div className="bg-white p-6 rounded-xl shadow border border-gray-100 text-left h-full flex flex-col hover:border-purple-300">
+              <div className="bg-white px-1 py- sm:px-4 sm:py-5 rounded-xl shadow border border-gray-100 text-left h-full flex flex-col border border-transparent
+            hover:border-purple-300
+            hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+            transition-all duration-300
+            rounded-2xl">
                 <h3 className="text-xl font-semibold text-gray-800 mb-1">
                   {t.title}
                   </h3>
@@ -218,13 +227,13 @@ export default function Testimonials() {
                       href={t.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-purple-600 underline text-sm mb-3 block hover:text-purple-800"
+                      className="text-purple-600 text-sm mb-3 block hover:text-purple-800"
                     >
                       Visit Page →
                     </a>
                   )}
 
-                  <p className="text-gray-700 leading-relaxed italic border-l-4 border-purple-300 pl-3">
+                  <p className="text-gray-700 leading-relaxed italic border-l-4 border-purple-300 pl-3 hover:font-bold transition">
                     "{t.content}"
                   </p>
 

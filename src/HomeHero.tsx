@@ -14,10 +14,16 @@ export default function HomeHero({ onSignup, onScrollNext }: Props) {
   return (
     <section
       id="HomeHero"
-      className="relative isolate overflow-hidden bg-transparent-to-b from-white to-gray-50"
+      className="relative isolate overflow-hidden bg-transparent-to-b from-white to-gray-50
+                hover:border-purple-300
+                hover:rounded-2xl
+                 hover:font-bold
+                 hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+                 transition-all 
+                 duration-300"
       style={{ paddingTop: "5rem" }} // offset for fixed navbar
     >
-      <div className="mx-auto max-w-5xl px-4 py-16 sm:py-24 text-center">
+      <div className="mx-auto max-w-5xl px-4 py-8 sm:py-12 text-center">
         <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-gray-900">
           Grow your affiliate revenue with <br></br>Neat Affiliates
         </h1>
@@ -29,7 +35,7 @@ export default function HomeHero({ onSignup, onScrollNext }: Props) {
         <div className="mt-8 flex items-center justify-center gap-3">
           <button
             onClick={onSignup}
-            className="font-bold sm:text-base lg:text-lg rounded-xl bg-green-600 px-5 py-2 sm:px-7 sm:py-3 text-white hover:bg-green-800 transition"
+            className="font-bold sm:text-base lg:text-lg rounded-xl bg-green-600 px-5 py-2 sm:px-7 sm:py-3 text-white hover:bg-green-800 hover:font-bold transition"
           >
             Register Now and Start Earning
           </button>
@@ -37,7 +43,13 @@ export default function HomeHero({ onSignup, onScrollNext }: Props) {
       <div className="mt-8 flex items-center justify-center gap-3">
         <button
             onClick={onScrollNext}
-            className="font-bold text-sm sm:text-base lg:text-lg rounded-xl border px-4 py-2 sm:px-6 sm:py-3 text-gray-700 hover:bg-gray-100 transition"
+            className="font-bold text-sm sm:text-base lg:text-lg rounded-xl border px-4 py-2 sm:px-6 sm:py-3 text-gray-700
+                 hover:border-purple-300
+                 hover:font-bold
+                 hover:text-purple-700
+                 hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+                 transition-all 
+                 duration-300"
             aria-label="Scroll to next section"
           >
             Learn more

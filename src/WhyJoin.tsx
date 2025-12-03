@@ -66,7 +66,12 @@ export default function WhyJoin() {
       {/* Inject animation into page */}
       <style>{cardAnimation}</style>
 
-      <section id="WhyJoin" className="py-16 bg-white rounded-2xl border">
+      <section id="WhyJoin" className="py-16 bg-white rounded-2xl border
+      border-transparent
+      hover:border-purple-300
+      hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+      transition-all 
+      duration-300">
         <div className="max-w-6xl mx-auto px-4">
 
           {/* ------------------------------------------------------------
@@ -75,7 +80,7 @@ export default function WhyJoin() {
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-4">
             Why Join Neat Affiliates?
           </h2>
-          <p className="text-center text-gray-500 mb-12">
+          <p className="text-center text-gray-500 mb-12 hover:font-bold transition">
             Top reasons why affiliates love working with us
           </p>
 
@@ -86,7 +91,13 @@ export default function WhyJoin() {
             {items.map((item, index) => (
               <div
                 key={item.id}
-                className="p-4 bg-white shadow-sm rounded-lg border border-gray-200 flex items-start gap-3 opacity-0"
+                className="p-4 bg-white shadow-sm rounded-lg border border-gray-200 flex items-start gap-3 opacity-0
+                hover:border-purple-300
+                hover:rounded-2xl
+                 hover:font-bold
+
+                 transition-all 
+                 duration-300"
                 style={{
                   animation: "slideIn 1.2s ease-out forwards",
                   animationDelay: `${index}s`,
@@ -128,6 +139,11 @@ export default function WhyJoin() {
         p-8 bg-white shadow-md rounded-xl border border-gray-200
         hover:shadow-lg hover:border-purple-300 transition text-center opacity-0
         w-[300px]
+        border border-transparent
+    hover:border-purple-300
+    hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+    transition-all duration-300
+    rounded-2xl
       "
       style={{
         animation: "slideIn 1.2s ease-out forwards",
@@ -150,7 +166,7 @@ export default function WhyJoin() {
       </h3>
 
       {/* Description */}
-      <p className="text-gray-600 text-sm px-4 leading-relaxed">
+      <p className="text-gray-600 text-sm px-4 leading-relaxed hover:font-bold transition">
         {item.description}
       </p>
     </div>
@@ -167,6 +183,12 @@ export default function WhyJoin() {
                 text-xl font-bold px-6 py-3 rounded-full
                 bg-purple-600 text-white hover:bg-purple-800
                 shadow-lg transition
+                border-transparent
+                 hover:border-purple-300
+                 hover:font-bold
+                 hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+                 transition-all 
+                 duration-300
               "
             >
               Join Neat Affiliates

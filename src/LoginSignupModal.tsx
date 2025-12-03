@@ -190,7 +190,13 @@ export default function LoginSignupModal({
                   window.open(url, '_blank');
                 }}
               >
-                <div className="border p-4 rounded shadow hover:bg-purple-50 transition duration-300 cursor-pointer text-center">
+                <div className="border p-4 rounded shadow hover:bg-purple-50 transition duration-300 cursor-pointer text-center
+                hover:border-purple-300
+                 hover:font-bold
+                 hover:text-purple-700
+                 hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+                 transition-all 
+                 duration-300">
                 
                   <p className="font-bold">
                     {associatedBrands || 'No brands associated'}

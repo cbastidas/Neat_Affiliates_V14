@@ -220,7 +220,7 @@ const showLess = (groupName: string) => {
     }}
     className="flex items-center gap-2"
   >
-    <img src="/logo.png" alt="Logo" className="h-10 w-25 cursor-pointer" />
+    <img src="/logo.png" alt="Logo" className="h-10 w-25 cursor-pointer hover:brightness-125" />
   </div>
 
     {/* Hamburguer Menu */}
@@ -262,7 +262,12 @@ const showLess = (groupName: string) => {
         scrollToSection(id);
       }
     }}
-    className="text-gray-700 text-base px-3 py-2 rounded hover:bg-gray-100 transition"
+    className="text-gray-700 font-bold text-base px-3 py-2 rounded border border-transparent
+    hover:border-purple-300
+    hover:text-purple-700
+    hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+    transition-all duration-300
+    rounded-2xl"
     >
     {id.replace(/([A-Z])/g, ' $1').trim()}
   </button>
@@ -351,12 +356,27 @@ const showLess = (groupName: string) => {
         </div>
 
 {/* ✅ Commission Rate with dynamic cards */}
-        <section id="CommissionRate" style={{ paddingTop: '4rem', paddingBottom: '4rem', borderWidth: '2px', borderRadius: '1rem', backgroundColor: 'white'}}>
+        <section
+  id="CommissionRate"
+  className="
+    bg-white 
+    py-16 
+    border-2 
+    rounded-2xl
+    border-transparent
+    hover:border-purple-300
+    hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+    transition-all 
+    duration-300
+  "
+>
+
           <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
             <h2 style={{ fontSize: '2rem', fontWeight: 'bold', textAlign: 'center', marginBottom: '1rem', color: '#1f2937' }}>
               Commission Rate
             </h2>
-            <p style={{ textAlign: 'center', color: '#6b7280', marginBottom: '2rem', fontSize: '1rem' }}>
+            <p className="text-center text-gray-500 mb-8 text-base hover:font-bold transition"
+>
               Earn more as you grow. Our laddered commission system rewards your success.
             </p>
             <div className="space-y-10 mt-6">
@@ -364,7 +384,13 @@ const showLess = (groupName: string) => {
                  brands.length > 0 && (
                    <section
                      key={groupName}
-                     className="p-6 bg-white rounded-lg border shadow-sm"
+                     className="p-6 bg-white rounded-lg border shadow-sm
+                     border-transparent
+                      hover:border-purple-300
+                      hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+                      hover:border-radius-2xl
+                      transition-all 
+                      duration-300"
                    >
 
                       <div className="md:hidden mx-[-76px] px-4">
@@ -382,7 +408,12 @@ const showLess = (groupName: string) => {
             <div className="hidden md:flex flex-col items-center bg-white rounded-2xl border">
 
               {/* Always show the first 3 */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center w-full p-6">
+              <div className="grid grid-cols-1 rounded-2xl sm:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center w-full p-6 border-transparent
+                hover:border-purple-300
+                hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+                hover-rounded-2xl
+                transition-all 
+                duration-300">
                 {brands.slice(0, 3).map((brand) => (
                   <BrandCard
                     key={brand.id}
@@ -402,7 +433,8 @@ const showLess = (groupName: string) => {
               
               {/* PROGRESSIVE LOAD OF EXTRA BRANDS */}
               {brands.length > 3 && (
-                <div className="w-full px-6 mt-2">
+                <div className="w-full px-6 mt-2 border-transparent
+               ">
                   <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center">
 
                     {/* compute how many extra brands are allowed */}
@@ -431,7 +463,8 @@ const showLess = (groupName: string) => {
                     {(visibleExtra[groupName] || 0) < brands.length - 3 && (
                       <button
                         onClick={() => showMore(groupName, brands.length - 3)}
-                        className="px-6 py-2 rounded-full bg-purple-600 text-white font-semibold hover:bg-purple-700 transition"
+                        className="px-6 py-2 rounded-full bg-purple-600 text-white font-semibold hover:bg-purple-700 hover:font-bold transition
+                     "
                       >
                         Show More
                       </button>
@@ -441,7 +474,14 @@ const showLess = (groupName: string) => {
                     {(visibleExtra[groupName] || 0) > 0 && (
                       <button
                         onClick={() => showLess(groupName)}
-                        className="px-6 py-2 rounded-full bg-gray-200 text-gray-800 font-semibold hover:bg-gray-300 transition"
+                        className="px-6 py-2 rounded-full bg-gray-200 text-gray-800 font-semibold hover:bg-gray-300 transition
+                        border-transparent
+                        hover:border-purple-300
+                        hover:text-purple-700
+                        hover:font-bold
+                        hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+                        transition-all 
+                        duration-300"
                       >
                         Show Less
                       </button>

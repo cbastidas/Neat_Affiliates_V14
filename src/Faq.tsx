@@ -36,15 +36,19 @@ export default function Faq({ onSignup }: FaqProps) {
   const filtered = faqs.filter(f => f.category === activeCategory);
 
   return (
-    <section id="FAQ" className="py-16 text-center bg-white rounded-2xl border">
+    <section id="FAQ" className="py-16 text-center bg-white border border-transparent
+    hover:border-purple-300
+    hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+    transition-all duration-300
+    rounded-2xl">
       <h2 className="text-3xl font-bold mb-4">Frequently Asked Questions</h2>
-      <p className="text-gray-600 mb-6">You can find the answers to your questions. For different questions, please contact us.</p>
+      <p className="text-gray-600 mb-6 hover:font-bold transition">You can find the answers to your questions. For different questions, please contact us.</p>
 
       <div className="flex justify-center flex-wrap gap-4 mb-6">
         {categories.map((cat) => (
           <button 
             key={cat} 
-            className={`px-4 py-2 rounded-full ${activeCategory === cat ? 'bg-purple-600 text-white hover:bg-purple-800' : 'bg-gray-200 text-black hover:bg-gray-400'}`} 
+            className={`px-4 py-2 rounded-full ${activeCategory === cat ? 'bg-purple-600 font-bold text-white hover:bg-purple-800' : 'bg-gray-200 text-black hover:font-bold hover:bg-gray-200 hover:text-purple-700'}`} 
             onClick={() => setActiveCategory(cat)}
           >
             {cat}
@@ -54,7 +58,12 @@ export default function Faq({ onSignup }: FaqProps) {
 
       <div className="max-w-4xl mx-auto text-left">
         {filtered.map((faq) => (
-          <div key={faq.id} className="mb-4 border rounded bg-white hover:bg-gray-200 transition-colors">
+          <div key={faq.id} className="mb-4 border rounded bg-white border border-transparent
+    hover:border-purple-300
+    hover:font-bold
+    hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+    transition-all duration-300
+    rounded-2xl">
             <button 
               onClick={() => setExpanded(expanded === faq.id ? null : faq.id)} 
               className="w-full text-left px-4 py-3 font-semibold"

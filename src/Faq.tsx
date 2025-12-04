@@ -60,7 +60,6 @@ export default function Faq({ onSignup }: FaqProps) {
         {filtered.map((faq) => (
           <div key={faq.id} className="mb-4 border rounded bg-white border border-transparent
     hover:border-purple-300
-    hover:font-bold
     hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
     transition-all duration-300
     rounded-2xl">

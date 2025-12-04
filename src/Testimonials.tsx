@@ -213,11 +213,14 @@ export default function Testimonials() {
                 px-3 sm:px-6 mb-4 
               "
             >
-              <div className="bg-white px-1 py- sm:px-4 sm:py-5 rounded-xl shadow border border-gray-100 text-left h-full flex flex-col border border-transparent
-            hover:border-purple-300
-            hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
-            transition-all duration-300
-            rounded-2xl">
+              <div className="
+              group
+              bg-white px-1 py- sm:px-4 sm:py-5 rounded-xl shadow border border-gray-100 text-left h-full flex flex-col border border-transparent
+              hover:border-purple-300
+              hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+              transition-all duration-300
+              rounded-2xl
+              ">
                 <h3 className="text-xl font-semibold text-gray-800 mb-1">
                   {t.title}
                   </h3>
@@ -233,7 +236,7 @@ export default function Testimonials() {
                     </a>
                   )}
 
-                  <p className="text-gray-700 leading-relaxed italic border-l-4 border-purple-300 pl-3 hover:font-bold transition">
+                  <p className="text-gray-700 leading-relaxed italic border-l-4 border-purple-300 pl-3 group-hover:font-bold transition">
                     "{t.content}"
                   </p>
 

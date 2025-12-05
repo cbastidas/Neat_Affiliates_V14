@@ -210,7 +210,7 @@ const showLess = (groupName: string) => {
     <div className="font-sans min-h-screen bg-gray-50 scroll-smooth">
       {/* Navbar */}
 
-<nav className="fixed top-0 left-0 w-full bg-white shadow z-20 px-6 py-4 flex justify-between items-center">
+<nav className="fixed top-0 left-0 w-full bg-white shadow z-20 px-6 pt-2 pb-2 flex justify-between items-center">
 
   {/* Logo - Takes to TOP */}
   <div 
@@ -334,7 +334,7 @@ const showLess = (groupName: string) => {
           />
       </div>
 
-      <main className="pt-6 max-w-6xl mx-auto px-4 space-y-12 md:space-y-12">
+      <main className="max-w-6xl mx-auto px-4 space-y-12 md:space-y-12">
 
         
 

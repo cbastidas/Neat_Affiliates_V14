@@ -63,7 +63,7 @@ const ThroneSignupModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
                 {/* Close button */}
                 <button
-                    className="absolute top-3 right-3 text-black text-2xl"
+                    className="absolute top-4 right-4 text-black text-2xl"
                     onClick={onClose}
                 >
                     ×

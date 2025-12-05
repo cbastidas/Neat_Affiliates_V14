@@ -106,13 +106,13 @@ export default function LoginSignupModal({
       }}
     >
       <div
-        className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md relative"
-        role="dialog"
+        className="bg-white rounded-2xl shadow-lg p-6 w-[90%] max-w-lg max-h-[80vh] overflow-y-auto relative animate-fadeIn"
+        role="dialog" 
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-2 right-2 text-gray-500 hover:text-black"
+          className="absolute top-2 right-4 text-gray-500 hover:text-black"
         >
           ✕
         </button>

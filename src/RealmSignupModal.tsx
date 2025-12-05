@@ -60,9 +60,7 @@ useEffect(() => {
             <div
                 className="
                   bg-white 
-                  w-full 
-                  max-w-3xl 
-                  max-h-[88vh] 
+                  w-[95%] max-w-4xl max-h-[90vh] 
                   overflow-y-auto 
                   rounded-2xl 
                   shadow-xl 
@@ -77,7 +75,7 @@ useEffect(() => {
 
                 {/* Close button */}
                 <button 
-                    className="absolute top-3 right-3 text-black text-2xl"
+                    className="absolute top-4 right-4 text-black text-2xl"
                     onClick={onClose}
                 >
                     ×

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './styles.css';
-import BackgroundAnimation from './BackgroundAnimation';
+//import BackgroundAnimation from './BackgroundAnimation';
 import BrandCard from './BrandCard';
 import { supabase } from './lib/supabaseClient';
 import PublicBrandLogoGallery from './BrandsSection';
@@ -207,10 +207,10 @@ const showLess = (groupName: string) => {
 
   return (
     
-    <div className="font-sans min-h-screen bg-gray-50">
+    <div className="font-sans min-h-screen bg-gray-50 scroll-smooth">
       {/* Navbar */}
 
-<nav className="fixed top-0 left-0 w-full bg-white shadow z-20 p-4 flex justify-between items-center">
+<nav className="fixed top-0 left-0 w-full bg-white shadow z-20 px-6 py-4 flex justify-between items-center">
 
   {/* Logo - Takes to TOP */}
   <div 
@@ -323,7 +323,6 @@ const showLess = (groupName: string) => {
 )}
 
       {/* Main content */}
-      <div><BackgroundAnimation /></div>
       <div>
         <HomeHero
           onLogin={() => setModalType('login')}
@@ -335,7 +334,7 @@ const showLess = (groupName: string) => {
           />
       </div>
 
-      <main className="pt-24 max-w-5xl mx-auto px-4">
+      <main className="pt-6 max-w-6xl mx-auto px-4 space-y-12 md:space-y-12">
 
         
 
@@ -344,161 +343,168 @@ const showLess = (groupName: string) => {
         }
 
         {
+          <section id="News">
           <NewsImage />
+          </section>
         }
 
         
-        <div id="OurBrands" className="py-16">
+        <div id="OurBrands">
         {/* 🎯 Pass the onSignup function */}
         <PublicBrandLogoGallery 
           onSignup={() => setModalType('signup')} 
         />
         </div>
 
-{/* ✅ Commission Rate with dynamic cards */}
-        <section
-  id="CommissionRate"
-  className="
-    bg-white 
-    py-16 
-    border-2 
-    rounded-2xl
-    border-transparent
-    hover:border-purple-300
-    hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
-    transition-all 
-    duration-300
-  "
->
+        {/* ✅ Commission Rate with Tailwind styling applied */}
+          <section
+            id="CommissionRate"
+            className="
+              bg-white 
+              pt-6 md:pt-24 pb-6
+              border-2 rounded-2xl
+              border-transparent
+              hover:border-purple-300
+              hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+              transition-all duration-300
+            "
+          >
+            <div className="max-w-[1200px] mx-auto px-4">
+              <h2 className="text-3xl font-bold text-center mb-4 text-gray-900">
+                Commission Rate
+              </h2>
 
-          <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
-            <h2 style={{ fontSize: '2rem', fontWeight: 'bold', textAlign: 'center', marginBottom: '1rem', color: '#1f2937' }}>
-              Commission Rate
-            </h2>
-            <p className="text-center text-gray-500 mb-8 text-base hover:font-bold transition"
->
-              Earn more as you grow. Our laddered commission system rewards your success.
-            </p>
-            <div className="space-y-10 mt-6">
-               {groupedBrands.map(({ groupName, brands }) => (
-                 brands.length > 0 && (
-                   <section
-                     key={groupName}
-                     className="p-6 bg-white rounded-lg border shadow-sm
-                     border-transparent
-                      hover:border-purple-300
-                      hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
-                      hover:border-radius-2xl
-                      transition-all 
-                      duration-300"
-                   >
+              <p className="text-center text-gray-500 mb-8 text-base hover:font-bold transition">
+                Earn more as you grow. Our laddered commission system rewards your success.
+              </p>
 
-                      <div className="md:hidden mx-[-76px] px-4">
+              <div className="space-y-10 mt-6">
+                {groupedBrands.map(({ groupName, brands }) => (
+                  brands.length > 0 && (
+                    <section
+                      key={groupName}
+                      className="
+                        p-6 bg-transparent rounded-lg border shadow-sm
+                        border-transparent
+                      "
+                    >
+
+                      {/* MOBILE */}
+                      <div className="md:hidden -mx-20 px-4">
                         <CommissionRateMobile 
-                        brands={brands.map(brand => ({
-                          ...brand,
-                          signup_url: getSignupForBrand(brand),
-                        })) }
-                        handleOpenSignupMobile={handleOpenSignupModal}
+                          brands={brands.map(brand => ({
+                            ...brand,
+                            signup_url: getSignupForBrand(brand),
+                          }))}
+                          handleOpenSignupMobile={handleOpenSignupModal}
                         />
+                      </div>
+
+                      {/* DESKTOP */}
+                      <div className="hidden md:flex flex-col items-center bg-white rounded-2xl border">
+
+                        {/* Always 3 initial cards */}
+                        <div className="
+                          grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 
+                          gap-8 justify-items-center w-full p-6 rounded-2xl
+                          border-transparent
+                          hover:border-purple-300
+                          hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+                          transition-all duration-300
+                        ">
+                          {brands.slice(0, 3).map((brand) => (
+                            <BrandCard
+                              key={brand.id}
+                              id={brand.id}
+                              logoUrl={brand.logo_url}
+                              name={brand.name}
+                              commissionTiers={brand.commission_tiers || []}
+                              commissionType={brand.commission_type}
+                              isVisible={brand.is_visible}
+                              commission_tiers_label={brand.commission_tiers_label}
+                              onSave={() => {}}
+                              isPublicView={true}
+                              onJoin={() => handleOpenSignupModal(brand)}
+                            />
+                          ))}
                         </div>
 
-            
-             {/* Desktop cards */}
-            <div className="hidden md:flex flex-col items-center bg-white rounded-2xl border">
+                        {/* LOAD MORE */}
+                        {brands.length > 3 && (
+                          <div className="w-full px-6 mt-2">
+                            <div className="
+                              grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 
+                              gap-8 justify-items-center
+                            ">
+                              {brands
+                                .slice(3, 3 + (visibleExtra[groupName] || 0))
+                                .map((brand) => (
+                                  <BrandCard
+                                    key={brand.id}
+                                    id={brand.id}
+                                    logoUrl={brand.logo_url}
+                                    name={brand.name}
+                                    commissionTiers={brand.commission_tiers || []}
+                                    commissionType={brand.commission_type}
+                                    isVisible={brand.is_visible}
+                                    commission_tiers_label={brand.commission_tiers_label}
+                                    onSave={() => {}}
+                                    isPublicView={true}
+                                    onJoin={() => handleOpenSignupModal(brand)}
+                                  />
+                                ))}
+                            </div>
 
-              {/* Always show the first 3 */}
-              <div className="grid grid-cols-1 rounded-2xl sm:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center w-full p-6 border-transparent
-                hover:border-purple-300
-                hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
-                hover-rounded-2xl
-                transition-all 
-                duration-300">
-                {brands.slice(0, 3).map((brand) => (
-                  <BrandCard
-                    key={brand.id}
-                    id={brand.id}
-                    logoUrl={brand.logo_url}
-                    name={brand.name}
-                    commissionTiers={brand.commission_tiers || []}
-                    commissionType={brand.commission_type}
-                    isVisible={brand.is_visible}
-                    commission_tiers_label={brand.commission_tiers_label}
-                    onSave={() => {}}
-                    isPublicView={true}
-                    onJoin={() => handleOpenSignupModal(brand)}
-                  />
+                            {/* BUTTONS */}
+                            <div className="flex justify-center gap-4 mt-4 my-3">
+
+                              {/* SHOW MORE */}
+                              {(visibleExtra[groupName] || 0) < brands.length - 3 && (
+                                <button
+                                  onClick={() => showMore(groupName, brands.length - 3)}
+                                  className="
+                                    px-6 py-2 rounded-full 
+                                    bg-purple-600 text-white font-semibold
+                                    hover:bg-purple-700 hover:font-bold
+                                    transition duration-300
+                                  "
+                                >
+                                  Show More
+                                </button>
+                              )}
+
+                              {/* SHOW LESS */}
+                              {(visibleExtra[groupName] || 0) > 0 && (
+                                <button
+                                  onClick={() => showLess(groupName)}
+                                  className="
+                                    px-6 py-2 rounded-full 
+                                    bg-gray-200 text-gray-800 font-semibold 
+                                    hover:bg-gray-300 
+                                    hover:border-purple-300 hover:text-purple-700 
+                                    hover:font-bold
+                                    hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+                                    border border-transparent
+                                    transition-all duration-300
+                                  "
+                                >
+                                  Show Less
+                                </button>
+                              )}
+
+                            </div>
+                          </div>
+                        )}
+
+                      </div>
+
+                    </section>
+                  )
                 ))}
               </div>
-              
-              {/* PROGRESSIVE LOAD OF EXTRA BRANDS */}
-              {brands.length > 3 && (
-                <div className="w-full px-6 mt-2 border-transparent
-               ">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center">
-
-                    {/* compute how many extra brands are allowed */}
-                    {brands.slice(3, 3 + (visibleExtra[groupName] || 0)).map((brand) => (
-                      <BrandCard
-                        key={brand.id}
-                        id={brand.id}
-                        logoUrl={brand.logo_url}
-                        name={brand.name}
-                        commissionTiers={brand.commission_tiers || []}
-                        commissionType={brand.commission_type}
-                        isVisible={brand.is_visible}
-                        commission_tiers_label={brand.commission_tiers_label}
-                        onSave={() => {}}
-                        isPublicView={true}
-                        onJoin={() => handleOpenSignupModal(brand)}
-                      />
-                    ))}
-
-                  </div>
-
-                  {/* BUTTONS */}
-                  <div className="flex justify-center gap-4 mt-4 my-3">
-
-                    {/* SHOW MORE — only if there are more to reveal */}
-                    {(visibleExtra[groupName] || 0) < brands.length - 3 && (
-                      <button
-                        onClick={() => showMore(groupName, brands.length - 3)}
-                        className="px-6 py-2 rounded-full bg-purple-600 text-white font-semibold hover:bg-purple-700 hover:font-bold transition
-                     "
-                      >
-                        Show More
-                      </button>
-                    )}
-
-                    {/* SHOW LESS — only visible if something is expanded */}
-                    {(visibleExtra[groupName] || 0) > 0 && (
-                      <button
-                        onClick={() => showLess(groupName)}
-                        className="px-6 py-2 rounded-full bg-gray-200 text-gray-800 font-semibold hover:bg-gray-300 transition
-                        border-transparent
-                        hover:border-purple-300
-                        hover:text-purple-700
-                        hover:font-bold
-                        hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
-                        transition-all 
-                        duration-300"
-                      >
-                        Show Less
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
-
             </div>
+          </section>
 
-
-        </section>
-                 )
-              ))}
-            </div>
-          </div>  
-        </section>
 
         {/* Contact Section
         {ui.contact_section !== false && (
@@ -509,15 +515,22 @@ const showLess = (groupName: string) => {
         )}
           */}
         
-        <div id="Testimonials" className="my-16">
+        <div id="Testimonials">
         <Testimonials />
         </div>
 
+        <section id="FAQ">
         {/* 🎯 PASS THE onSignup PROP TO FAQ */}
         <Faq onSignup={() => setModalType('signup')} />
+        </section>
 
       {/* Login and Signup Section */}
-      <div className="text-center my-10">
+      <div className="py-16 text-center bg-white border border-transparent
+        hover:border-purple-300
+        hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+        transition-all duration-300
+        rounded-2xl
+        ">
 
           <h2 className="text-3xl font-bold mb-6">Join Neat Affiliates Today!</h2>
           <h3 className="text-lg text-gray-600 mb-6">

@@ -30,17 +30,27 @@ export default function NewsImage() {
   return (
     <section
       id="News"
-      className="py-16 mt-10 bg-white rounded-xl border shadow-sm px-6 max-w-4xl mx-auto
-      border-transparent
-      hover:border-purple-300
-      hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
-      transition-all 
-      duration-300"
+      className="
+        py-20 
+        bg-white 
+        rounded-2xl 
+        border 
+        border-gray-200
+        shadow-sm 
+        px-6 
+        max-w-5xl 
+        mx-auto
+        transition-all 
+        duration-300
+        hover:border-purple-300
+        hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+      "
     >
-      <h2 className="text-3xl font-bold text-center mb-2 text-gray-900">
+      <h2 className="text-3xl font-bold text-center text-gray-900 mb-4">
         Latest News
       </h2>
-      <p className="text-center text-gray-600 mb-8 hover:font-bold transition">
+
+      <p className="text-center text-gray-600 mb-10">
         Stay up to date with our latest updates and announcements.
       </p>
 
@@ -49,28 +59,42 @@ export default function NewsImage() {
         <p className="text-center text-gray-500">Loading news...</p>
       )}
 
-      {/* No news available */}
+      {/* No news message */}
       {!loading && news.length === 0 && (
-        <p className="text-center text-gray-700 text-lg hover:text-purple-700 transition">
+        <p className="text-center text-gray-700 text-lg">
           No news available at the moment. Please check back soon! 😊
         </p>
       )}
 
       {/* News Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mt-6">
-        {news.map((item) => (
-          <div
-            key={item.id}
-            className="w-full rounded-xl overflow-hidden shadow hover:shadow-lg transition border bg-gray-50"
-          >
-            <img
-              src={item.image_url}
-              alt="News"
-              className="w-full h-56 object-cover"
-            />
-          </div>
-        ))}
-      </div>
+      {!loading && news.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+          {news.map((item) => (
+            <div
+              key={item.id}
+              className="
+                w-full 
+                rounded-xl 
+                overflow-hidden 
+                border 
+                border-gray-200
+                bg-gray-50
+                shadow-sm
+                transition-all 
+                duration-300 
+                hover:shadow-lg 
+                hover:border-purple-300
+              "
+            >
+              <img
+                src={item.image_url}
+                alt="News"
+                className="w-full h-48 sm:h-56 object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

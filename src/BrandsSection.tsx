@@ -36,57 +36,81 @@ export default function BrandLogoGallery({ onSignup }: BrandLogoGalleryProps) {
   if (logos.length === 0) return null;
 
   return (
-    <section className="py-12 bg-white overflow-hidden relative py-16 bg-white rounded-2xl border
-    border-transparent
-    hover:border-purple-300
-    hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
-    transition-all 
-    duration-300">
-      <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-2xl font-bold text-center mb-8 text-black-600">Our Brands</h2>
+    <section
+  className="
+    relative overflow-hidden bg-white 
+    py-16 md:py-16 
+    rounded-2xl border border-transparent
+    hover:border-purple-300 hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+    transition-all duration-300
+  "
+>
+  <div className="max-w-6xl mx-auto px-4 md:px-6 lg:px-8">
+    
+    {/* TITLE */}
+    <h2
+      className="
+        text-3xl md:text-4xl font-bold text-center 
+        text-gray-900 
+        mb-10 md:mb-12
+      "
+    >
+      Our Brands
+    </h2>
 
-        <div className="relative w-full overflow-hidden">
-          <div className="flex animate-marquee gap-8 w-max">
-            {[...logos, ...logos].map((logo, index) => (
-              <div
-                key={`${logo.id}-${index}`}
-                className="flex-shrink-0 w-40 h-30 flex items-center justify-center"
-              >
-                <img
-                  src={logo.logo_url}
-                  alt={logo.name}
-                  className="max-h-[60px] w-auto object-contain"
-                  loading="lazy"
-                />
-              </div>
-            ))}
+    {/* LOGO MARQUEE */}
+    <div className="relative w-full overflow-hidden">
+      <div className="flex animate-marquee gap-8 w-max">
+        {[...logos, ...logos].map((logo, index) => (
+          <div
+            key={`${logo.id}-${index}`}
+            className="flex-shrink-0 w-32 h-20 md:w-40 md:h-24 flex items-center justify-center"
+          >
+            <img
+              src={logo.logo_url}
+              alt={logo.name}
+              className="max-h-[50px] md:max-h-[60px] w-auto object-contain brightness-95 hover:brightness-110 transition"
+            />
           </div>
-        </div>
-
-        <div className="text-center mt-12">
-            <button
-                onClick={onSignup}
-                className="text-base sm:text-lg lg:text-xl font-bold px-8 py-3 rounded-full bg-green-600 text-white hover:bg-green-800 shadow-lg transition"
-            >
-                Start Earning with Our Brands
-            </button>
-        </div>
+        ))}
       </div>
+    </div>
 
-      <style>
-        {`
-          @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-          }
+    {/* CTA BUTTON */}
+    <div className="text-center mt-12">
+      <button
+        onClick={onSignup}
+        className="
+          text-lg font-extrabold
+          px-4 py-3
+          rounded-full 
+          bg-green-600 text-white 
+          hover:bg-green-700
+          shadow-md hover:shadow-lg 
+          transition
+        "
+      >
+        Start Earning with Our Brands
+      </button>
+    </div>
 
-          .animate-marquee {
-            animation: marquee 40s linear infinite;
-            display: flex;
-            width: fit-content;
-          }
-        `}
-      </style>
-    </section>
+  </div>
+
+  {/* ANIMATION CSS */}
+  <style>
+    {`
+      @keyframes marquee {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      .animate-marquee {
+        animation: marquee 45s linear infinite;
+        display: flex;
+        width: fit-content;
+      }
+    `}
+  </style>
+</section>
+
   );
 }

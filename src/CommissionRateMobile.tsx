@@ -110,7 +110,7 @@ export default function CommissionRateMobile({
   return (
     // NOTE: If you use this component inside BrandsSection, 
     // ensure that BrandsSection doesn't contain a separate grid structure
-    <div className="max-w-6xl mx-auto relative">
+    <div className="max-w-6xl mx-5 relative">
       
       {/* Left Arrow (Visible only if scrollable and NOT at the start) */}
       {maxScrollIndex > 0 && active > 0 && (
@@ -137,8 +137,8 @@ export default function CommissionRateMobile({
           no-scrollbar
           w-full
           // Ensure padding to prevent cards from touching screen edges
-          px-4 
-          mx-[-1rem]
+          px-2
+          mx-2
         "
       >
         {brands.map((b) => (

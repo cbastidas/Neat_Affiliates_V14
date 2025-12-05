@@ -66,7 +66,7 @@ export default function WhyJoin() {
       {/* Inject animation into page */}
       <style>{cardAnimation}</style>
 
-      <section id="WhyJoin" className="py-16 bg-white rounded-2xl border
+      <section id="WhyJoin" className="relative py-12 bg-white rounded-2xl border
       border-transparent
       hover:border-purple-300
       hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
@@ -80,7 +80,7 @@ export default function WhyJoin() {
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-4">
             Why Join Neat Affiliates?
           </h2>
-          <p className="text-center text-gray-500 mb-12 hover:font-bold transition">
+          <p className="text-center text-gray-500 mb-8 hover:font-bold transition">
             Top reasons why affiliates love working with us
           </p>
 
@@ -136,7 +136,7 @@ export default function WhyJoin() {
       key={item.id}
       className="
         group
-        p-8 bg-white shadow-md rounded-xl border border-gray-200
+        p-6 bg-white shadow-md rounded-xl border border-gray-200
         transition-all duration-300
         w-[300px] text-center opacity-0
         hover:shadow-lg hover:border-purple-300
@@ -163,7 +163,7 @@ export default function WhyJoin() {
       </h3>
 
       {/* Description */}
-      <p className="text-gray-600 text-sm px-4 leading-relaxed group-hover:text-white transition">
+      <p className="text-gray-600 text-sm px-2 leading-relaxed group-hover:text-white transition">
         {item.description}
       </p>
     </div>
@@ -173,7 +173,7 @@ export default function WhyJoin() {
           {/* ------------------------------------------------------------
               CTA BUTTON
           ------------------------------------------------------------ */}
-          <div className="text-center mt-12">
+          <div className="text-center mt-10">
             <button
               onClick={() => setModalType("signup")}
               className="

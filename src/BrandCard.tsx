@@ -151,6 +151,7 @@ export default function BrandCard({
           <button
             onClick={onJoin}
             className="
+              font-extrabold
               inline-flex items-center justify-center
               h-10 w-28
               bg-green-600

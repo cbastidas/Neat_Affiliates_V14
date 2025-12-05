@@ -14,7 +14,7 @@ export default function HomeHero({ onSignup, onScrollNext }: Props) {
   return (
     <section
       id="HomeHero"
-      className="relative isolate overflow-hidden bg-transparent-to-b from-white to-gray-50
+      className="relative rounded-2xl isolate overflow-hidden bg-white pt-24 pb-10 sm:pt-32 sm:pb-16
                 hover:border-purple-300
                 hover:rounded-2xl
                  hover:font-bold
@@ -23,33 +23,31 @@ export default function HomeHero({ onSignup, onScrollNext }: Props) {
                  duration-300"
       style={{ paddingTop: "5rem" }} // offset for fixed navbar
     >
-      <div className="mx-auto max-w-5xl px-4 py-8 sm:py-12 text-center">
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-gray-900">
+      <div className="mx-auto max-w-4xl px-4 text-center">
+        <h1 className="text-4xl sm:text-6xl font-extrabold leading-tight text-gray-900">
           Grow your affiliate revenue with <br></br>Neat Affiliates
         </h1>
 
-        <p className="mt-4 text-lg text-gray-600">
+        <p className="mt-3 sm:mt-4 text-base sm:text-lg text-gray-600">
           Tools, reporting and flexible deals to help you scale—fast.
         </p>
 
-        <div className="mt-8 flex items-center justify-center gap-3">
+        <div className="mt-6 sm:mt-8 flex justify-center">
           <button
             onClick={onSignup}
-            className="font-bold sm:text-base lg:text-lg rounded-xl bg-green-600 px-5 py-2 sm:px-7 sm:py-3 text-white hover:bg-green-800 hover:font-bold transition"
+            className="font-extrabold sm:text-lg lg:text-lg rounded-xl bg-green-600 px-6 py-3 text-white hover:bg-green-800 hover:font-bold transition"
           >
             Register Now and Start Earning
           </button>
         </div>
-      <div className="mt-8 flex items-center justify-center gap-3">
+      <div className="mt-4 sm:mt-5 flex justify-center">
         <button
             onClick={onScrollNext}
-            className="font-bold text-sm sm:text-base lg:text-lg rounded-xl border px-4 py-2 sm:px-6 sm:py-3 text-gray-700
-                 hover:border-purple-300
-                 hover:font-bold
-                 hover:text-purple-700
-                 hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
-                 transition-all 
-                 duration-300"
+            className="rounded-xl border px-5 py-2 sm:px-6 sm:py-3 
+                       text-gray-700 hover:text-purple-700 
+                       hover:border-purple-300 hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+                       transition-all duration-300
+                       "
             aria-label="Scroll to next section"
           >
             Learn more
@@ -68,11 +66,7 @@ export default function HomeHero({ onSignup, onScrollNext }: Props) {
         </div>
           */}
 
-        {/* Decorative area – keep it subtle */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 -z-10 top-0 h-[320px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-100 via-transparent to-transparent"
-        />
+        
       </div>
     </section>
   );

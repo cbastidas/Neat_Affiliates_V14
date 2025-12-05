@@ -155,7 +155,7 @@ export default function Testimonials() {
   return (
     <section
       id="Testimonials"
-      className="py-2 px-3 sm:pt-16 text-center bg-gradient-to-b from-white to-gray-50
+      className="py-2 px-3 sm:pt-16 text-center bg-white
       border border-transparent
     hover:border-purple-300
     hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
@@ -199,8 +199,8 @@ export default function Testimonials() {
             [-webkit-overflow-scrolling:touch]
             no-scrollbar
             w-full
-            px-4 
-            mx-[-1rem]
+            px-2
+            mx-2
           "
         >
           {testimonials.map((t) => (
@@ -214,34 +214,50 @@ export default function Testimonials() {
               "
             >
               <div className="
-              group
-              bg-white px-1 py- sm:px-4 sm:py-5 rounded-xl shadow border border-gray-100 text-left h-full flex flex-col border border-transparent
-              hover:border-purple-300
-              hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
-              transition-all duration-300
-              rounded-2xl
+                group
+                bg-white 
+                px-4 py-4 sm:px-6 sm:py-6 
+                rounded-2xl shadow-md 
+                border border-gray-200
+                hover:border-purple-300
+                hover:shadow-[0_0_12px_rgba(109,0,220,0.35)]
+                transition-all duration-300
+                h-full flex flex-col
               ">
-                <h3 className="text-xl font-semibold text-gray-800 mb-1">
+
+                {/* TITLE */}
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-1 group-hover:text-purple-700 transition">
                   {t.title}
-                  </h3>
+                </h3>
 
-                  {t.link && (
-                    <a
-                      href={t.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-purple-600 text-sm mb-3 block hover:text-purple-800"
-                    >
-                      Visit Page →
-                    </a>
-                  )}
+                {/* LINK */}
+                {t.link && (
+                  <a
+                    href={t.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="
+                      text-purple-600 text-sm mb-3 block 
+                      hover:text-purple-800 transition
+                    "
+                  >
+                    Visit Page →
+                  </a>
+                )}
 
-                  <p className="text-gray-700 leading-relaxed italic border-l-4 border-purple-300 pl-3 group-hover:font-bold transition">
-                    "{t.content}"
-                  </p>
-
+                {/* CONTENT */}
+                <p className="
+                  text-gray-700 leading-relaxed italic
+                  border-l-4 border-purple-300 pl-3
+                  group-hover:font-bold group-hover:text-purple-600
+                  transition
+                ">
+                  "{t.content}"
+                </p>
+              
               </div>
-            </div>
+              </div>
+
           ))}
         </div>
 

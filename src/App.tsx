@@ -175,30 +175,17 @@ export default function App() {
 });
 
 const showMore = (groupName: string, maxExtra: number) => {
-  setVisibleExtra(prev => {
-    const current = prev[groupName] || 0;
-    const next = current + 3;
-
-    if (next >= maxExtra) {
-      return { ...prev, [groupName]: maxExtra }; // reached the end
-    }
-    return { ...prev, [groupName]: next };
-  });
+  setVisibleExtra(prev => ({ ...prev, [groupName]: maxExtra })); // show ALL extras
 };
 
 const showLess = (groupName: string) => {
-  // collapse extra cards
   setVisibleExtra(prev => ({ ...prev, [groupName]: 0 }));
 
-  // smooth scroll to CommissionRate header after collapse
   setTimeout(() => {
     const section = document.getElementById("CommissionRate");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, 300); // waits 300ms so collapse looks natural
+    section?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 150);
 };
-
 
 
 

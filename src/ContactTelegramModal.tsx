@@ -100,7 +100,32 @@ export default function ContactTelegramModal({ isOpen, onClose, onBrandClick }: 
           Fill the form below and we will receive your message on Telegram.
         </p>
 
-        {/* Clickable brand links (this is what you want) */}
+        
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Your question <span className="text-red-600">*</span>
+            </label>
+            <textarea
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              className="w-full rounded-lg border px-3 py-2 h-28 resize-vertical focus:outline-none focus:ring-2 focus:ring-purple-500"
+              placeholder="Write your question here…"
+              required
+            />
+          </div>
+
+          {error && <div className="text-sm text-red-600">{error}</div>}
+
+          <button
+            type="submit"
+            className="w-full px-4 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+          >
+            Send Message on Telegram 💬
+          </button>
+
+          {/* Clickable brand links (this is what you want) */}
         <p className="font-bold text-center text-gray-400 mb-2">
           <span
             className="text-blue-600 cursor-pointer hover:underline"
@@ -133,29 +158,6 @@ export default function ContactTelegramModal({ isOpen, onClose, onBrandClick }: 
           </span>{" "}
           have their own support channels.
         </p>
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Your question <span className="text-red-600">*</span>
-            </label>
-            <textarea
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              className="w-full rounded-lg border px-3 py-2 h-28 resize-vertical focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Write your question here…"
-              required
-            />
-          </div>
-
-          {error && <div className="text-sm text-red-600">{error}</div>}
-
-          <button
-            type="submit"
-            className="w-full px-4 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
-          >
-            Send Message on Telegram 💬
-          </button>
         </form>
       </div>
     </div>

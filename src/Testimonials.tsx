@@ -63,7 +63,6 @@ export default function Testimonials() {
     return () => window.removeEventListener("resize", calculateMaxScroll);
   }, [testimonials]);
 
-  // Manual scroll actualiza índice activo
   const onScroll = () => {
     const el = trackRef.current;
     if (!el) return;
@@ -121,7 +120,6 @@ export default function Testimonials() {
     userInteracting.current = true;
     if (autoTimer.current) clearInterval(autoTimer.current);
 
-    // tras 2s de inactividad, volvemos a permitir auto-slide
     setTimeout(() => {
       userInteracting.current = false;
     }, 2000);
@@ -138,7 +136,6 @@ export default function Testimonials() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [testimonials, maxScrollIndex]);
 
-  // Touch: pausar mientras el usuario hace swipe manual
   const handleTouchStart = () => {
     userInteracting.current = true;
     if (autoTimer.current) clearInterval(autoTimer.current);

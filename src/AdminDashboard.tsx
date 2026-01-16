@@ -10,7 +10,7 @@ import LogoVisibilityManager from './LogoVisibilityManager';
 import './styles.css';
 import SectionVisibilityToggle from "./SectionVisibilityToggle";
 import NewsImageEditor from "./NewsImageEditor";
-
+import TestimonialsEditor from "./TestimonialsEditor"; // ✅ NEW
 
 // ------------------------------------------------------
 // DND-KIT IMPORTS
@@ -32,7 +32,6 @@ import {
 
 import { CSS } from "@dnd-kit/utilities";
 
-
 // ------------------------------------------------------
 // SORTABLE WRAPPER FOR EACH BRANDCARD
 // ------------------------------------------------------
@@ -47,7 +46,7 @@ function SortableBrandCard({ id, children }: { id: string; children: React.React
 
   return (
     <div ref={setNodeRef} style={style} className="relative">
-      {/* Drag handle – solo esto es draggable */}
+      {/* Drag handle – only this is draggable */}
       <button
         type="button"
         className="
@@ -59,7 +58,7 @@ function SortableBrandCard({ id, children }: { id: string; children: React.React
         "
         {...attributes}
         {...listeners}
-        onClick={(e) => e.preventDefault()} // que no dispare clicks en la card
+        onClick={(e) => e.preventDefault()} // prevent clicks on the BrandCard below
       >
         ☰
       </button>
@@ -68,7 +67,6 @@ function SortableBrandCard({ id, children }: { id: string; children: React.React
     </div>
   );
 }
-
 
 // ------------------------------------------------------
 // MAIN ADMIN DASHBOARD
@@ -96,16 +94,17 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
 
+  // Section refs (used for navbar scroll)
   const whyJoinRef = useRef<HTMLDivElement>(null);
   const commissionRef = useRef<HTMLDivElement>(null);
   const brandsRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
   const faqRef = useRef<HTMLDivElement>(null);
+  const testimonialsRef = useRef<HTMLDivElement>(null); // ✅ NEW
   const loginRef = useRef<HTMLDivElement>(null);
 
   // DND sensors
   const sensors = useSensors(useSensor(PointerSensor));
-
 
   // ------------------------------------------------------
   // LOAD BRANDS FROM SUPABASE ORDERED BY 'order'
@@ -133,16 +132,13 @@ export default function AdminDashboard() {
     fetchBrands();
   }, []);
 
-
   // ------------------------------------------------------
   // RENDER
   // ------------------------------------------------------
   return (
     <div className="p-6">
-
       {/* FIXED TOP NAVBAR */}
       <div className="fixed top-0 left-0 w-full bg-white shadow z-20 p-4 flex justify-between items-center">
-
         {/* LEFT SIDE */}
         <div className="flex items-center gap-4">
           <img
@@ -168,22 +164,19 @@ export default function AdminDashboard() {
           <button onClick={() => brandsRef.current?.scrollIntoView({ behavior: 'smooth' })}>Our Brands</button>
           <button onClick={() => contactRef.current?.scrollIntoView({ behavior: 'smooth' })}>Contact</button>
           <button onClick={() => faqRef.current?.scrollIntoView({ behavior: 'smooth' })}>FAQ</button>
+          <button onClick={() => testimonialsRef.current?.scrollIntoView({ behavior: 'smooth' })}>Testimonials</button> {/* ✅ NEW */}
+          <button onClick={() => loginRef.current?.scrollIntoView({ behavior: 'smooth' })}>Login/Signup</button>
         </div>
-
       </div>
-
-
 
       {/* ------------------------------------------------------
           PAGE CONTENT
       ------------------------------------------------------ */}
       <div className="pt-28 space-y-16">
-
         {/* WHY JOIN */}
         <section ref={whyJoinRef}>
           <WhyJoinEditor />
         </section>
-
 
         {/* ------------------------------------------------------
             COMMISSION RATE (WITH DRAG & DROP)
@@ -223,7 +216,6 @@ export default function AdminDashboard() {
                   const newIndex = brands.findIndex((b) => b.id === over.id);
 
                   const reordered = arrayMove(brands, oldIndex, newIndex);
-
                   setBrands(reordered);
 
                   // SAVE ORDER TO SUPABASE
@@ -241,7 +233,6 @@ export default function AdminDashboard() {
                   strategy={rectSortingStrategy}
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 justify-items-center">
-
                     {brands.map((brand) => (
                       <SortableBrandCard key={brand.id} id={brand.id}>
                         <BrandCard
@@ -256,7 +247,6 @@ export default function AdminDashboard() {
                         />
                       </SortableBrandCard>
                     ))}
-
                   </div>
                 </SortableContext>
               </DndContext>
@@ -264,12 +254,10 @@ export default function AdminDashboard() {
           )}
         </section>
 
-
         {/* OUR BRANDS */}
         <section ref={brandsRef}>
           <LogoVisibilityManager />
         </section>
-
 
         {/* CONTACT */}
         <section ref={contactRef}>
@@ -278,13 +266,17 @@ export default function AdminDashboard() {
           <ContactEditor />
         </section>
 
-
         {/* FAQ */}
         <section ref={faqRef}>
           <h2 className="text-2xl font-bold text-center mb-6">❓ FAQ Admin Editor</h2>
           <FaqEditor />
         </section>
 
+        {/* ✅ TESTIMONIALS MANAGER INSIDE ADMIN DASHBOARD */}
+        <section ref={testimonialsRef}>
+          <h2 className="text-2xl font-bold text-center mb-6">✨ Testimonials Admin Manager</h2>
+          <TestimonialsEditor />
+        </section>
 
         {/* LOGIN / SIGNUP */}
         <section ref={loginRef}>
@@ -292,11 +284,10 @@ export default function AdminDashboard() {
           <AuthEditor />
         </section>
 
+        {/* NEWS */}
         <section id="news">
           <NewsImageEditor />
         </section>
-
-
       </div>
     </div>
   );

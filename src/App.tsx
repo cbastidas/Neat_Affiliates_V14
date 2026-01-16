@@ -16,7 +16,7 @@ import HomeHero from "./HomeHero";
 import BackToTopLogo from "./BackToTopLogo";
 import ContactQuickModal from "./ContactQuickModal";
 //import { useUiSections } from './hooks/useUiSections';
-import ContactEmailModal from "./ContactEmailModal";
+import ContactSupportModal from './ContactSupportModal';
 import CommissionRateMobile from './CommissionRateMobile';
 import Testimonials from './Testimonials';
 // NEW: modal for full instance signup form
@@ -613,10 +613,12 @@ const showLess = (groupName: string) => {
 )}
 
 {/* Global Contact modal (opens from navbar or FAB) */}
-<ContactEmailModal
+<ContactSupportModal
   isOpen={isContactEmailOpen}
   onClose={() => setIsContactEmailOpen(false)}
 />
+
+
 
 <RealmSignupModal
   isOpen={openInstance1Form}

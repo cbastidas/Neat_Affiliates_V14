@@ -4,43 +4,16 @@ import type { SupportBrand } from "./ContactSupportModal";
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  brand: SupportBrand | null;
+  onBrandClick: (brand: SupportBrand) => void;
 };
 
-// Brand-based configuration (one modal, multiple behaviors)
-const BRAND_CONFIG: Record<
-  SupportBrand,
-  { title: string; description: string; emailTo: string; subject: string }
-> = {
-  bluffbet: {
-    title: "Bluffbet Email Support",
-    description: "Send a message to Bluffbet support via email.",
-    emailTo: "support@bluffbet.com",
-    subject: "Bluffbet Support Request",
-  },
-  vidavegas: {
-    title: "Vidavegas Email Support",
-    description: "Send a message to Vidavegas support via email.",
-    emailTo: "support@vidavegas.com",
-    subject: "Vidavegas Support Request",
-  },
-  jackburst: {
-    title: "Jackburst Email Support",
-    description: "Send a message to Jackburst support via email.",
-    emailTo: "support@jackburst.com",
-    subject: "Jackburst Support Request",
-  },
-};
-
-export default function ContactEmailModal({ isOpen, onClose, brand }: Props) {
-  const [email, setEmail] = useState("");
+export default function ContactTelegramModal({ isOpen, onClose, onBrandClick }: Props) {
   const [question, setQuestion] = useState("");
   const [error, setError] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!isOpen) {
-      setEmail("");
       setQuestion("");
       setError(null);
     }
@@ -60,18 +33,8 @@ export default function ContactEmailModal({ isOpen, onClose, brand }: Props) {
 
   if (!isOpen) return null;
 
-  const brandData = brand ? BRAND_CONFIG[brand] : null;
-
   const validate = () => {
-    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return "Please enter a valid email address.";
-    }
-    if (!question.trim()) {
-      return "Please write your question.";
-    }
-    if (!brandData) {
-      return "Brand support channel not available.";
-    }
+    if (!question.trim()) return "Please write your question.";
     return null;
   };
 
@@ -84,14 +47,15 @@ export default function ContactEmailModal({ isOpen, onClose, brand }: Props) {
       return;
     }
 
-    if (!brandData) return;
+    // Build message to send to Telegram
+    const message = encodeURIComponent(
+      `💬 New Support Message\n\nQuestion:\n${question}`
+    );
 
-    // Build mailto (simple + reliable)
-    const subjectEnc = encodeURIComponent(brandData.subject);
-    const bodyEnc = encodeURIComponent(`Customer email: ${email}\n\nQuestion:\n${question}\n`);
+    // Replace with your bot or username
+    const telegramUrl = `https://t.me/neat_affiliates?start=${message}`;
 
-    window.location.href = `mailto:${brandData.emailTo}?subject=${subjectEnc}&body=${bodyEnc}`;
-
+    window.open(telegramUrl, "_blank");
     onClose();
   };
 
@@ -117,7 +81,7 @@ export default function ContactEmailModal({ isOpen, onClose, brand }: Props) {
           ...(window.innerWidth >= 768 && { marginLeft: "20px" }),
         }}
         aria-modal="true"
-        aria-labelledby="email-support-title"
+        aria-labelledby="contact-support-title"
       >
         {/* Close button */}
         <button
@@ -128,28 +92,49 @@ export default function ContactEmailModal({ isOpen, onClose, brand }: Props) {
           ✕
         </button>
 
-        <h3 id="email-support-title" className="text-xl font-bold mb-1 text-center">
-          {brandData ? brandData.title : "Email Support"}
+        <h3 id="contact-support-title" className="text-xl font-bold mb-1 text-center">
+          Contact Support
         </h3>
 
         <p className="text-center text-gray-600 mb-5">
-          {brandData ? brandData.description : "Send a message via email."}
+          Fill the form below and we will receive your message on Telegram.
+        </p>
+
+        {/* Clickable brand links (this is what you want) */}
+        <p className="font-bold text-center text-gray-400 mb-2">
+          <span
+            className="text-blue-600 cursor-pointer hover:underline"
+            onClick={() => onBrandClick("bluffbet")}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && onBrandClick("bluffbet")}
+          >
+            Bluffbet
+          </span>
+          ,{" "}
+          <span
+            className="text-blue-600 cursor-pointer hover:underline"
+            onClick={() => onBrandClick("vidavegas")}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && onBrandClick("vidavegas")}
+          >
+            Vidavegas
+          </span>{" "}
+          and{" "}
+          <span
+            className="text-blue-600 cursor-pointer hover:underline"
+            onClick={() => onBrandClick("jackburst")}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === "Enter" && onBrandClick("jackburst")}
+          >
+            Jackburst
+          </span>{" "}
+          have their own support channels.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Your email <span className="text-red-600">*</span>
-            </label>
-            <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="you@email.com"
-              required
-            />
-          </div>
-
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Your question <span className="text-red-600">*</span>
@@ -169,7 +154,7 @@ export default function ContactEmailModal({ isOpen, onClose, brand }: Props) {
             type="submit"
             className="w-full px-4 py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
           >
-            Send Email ✉️
+            Send Message on Telegram 💬
           </button>
         </form>
       </div>

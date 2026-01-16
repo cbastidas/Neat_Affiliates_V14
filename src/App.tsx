@@ -579,7 +579,7 @@ const showLess = (groupName: string) => {
       duration-200
     "
   >
-    Telegram 💬
+    Support 💬
   </button>
 )}
 

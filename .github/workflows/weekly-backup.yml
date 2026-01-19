@@ -42,7 +42,7 @@ jobs:
           if [ -d "snapshots" ]; then
             cd snapshots
             # List backups sorted by name (they contain ISO-like timestamps, so lexical order works)
-            backups=$(ls -1d backup-* 2>/dev/null | sort)
+            backups=$(ls -1d backup-* 2>/dev/null | sort || true)
             count=$(echo "$backups" | wc -l | tr -d ' ')
             if [ "$count" -gt 12 ]; then
               to_delete=$((count - 12))

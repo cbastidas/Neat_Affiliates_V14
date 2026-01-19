@@ -1,0 +1,70 @@
+name: Weekly Backup to Backup branch
+
+on:
+  schedule:
+    # Every Monday at 03:00 UTC (Malta is usually UTC+1 in winter / UTC+2 in summer)
+    - cron: "0 3 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create snapshot folder
+        run: |
+          TS="$(date -u +'%Y-%m-%d_%H-%M-%S')"
+          echo "TS=$TS" >> $GITHUB_ENV
+          rm -rf /tmp/_backups
+          mkdir -p /tmp/_backups
+          git archive --format=tar HEAD | tar -x -C /tmp/_backups
+
+      - name: Commit snapshot to Backup branch
+        run: |
+
+          git checkout Backup
+
+          # Keep only the most recent 12 backups
+          mkdir -p snapshots
+          if [ -d "snapshots" ]; then
+            cd snapshots
+            backups=$(ls -1d backup-* 2>/dev/null | sort || true)
+            count=$(echo "$backups" | wc -l | tr -d ' ')
+            if [ "$count" -gt 12 ]; then
+              to_delete=$((count - 12))
+              echo "More than 12 backups found ($count). Deleting $to_delete oldest backups..."
+              echo "$backups" | head -n "$to_delete" | xargs -r rm -rf
+            else
+              echo "Backups count ($count) is within limit (12). No cleanup needed."
+            fi
+            cd ..
+          fi
+
+          mkdir -p snapshots
+          SNAP_DIR="snapshots/backup-${TS}"
+          rm -rf "$SNAP_DIR"
+          mkdir -p "$SNAP_DIR"
+
+          # Copy snapshot content
+          rsync -a --delete /tmp/_backups/ "$SNAP_DIR/"
+
+          # Avoid nesting backups inside backups
+          rm -rf "$SNAP_DIR/_backups" || true
+
+          git add -A
+          git commit -m "backup-${TS}" || echo "No changes to commit"
+          git push origin Backup

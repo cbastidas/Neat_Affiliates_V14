@@ -1,0 +1,53 @@
+name: Weekly Backup to Backup branch
+
+on:
+  schedule:
+    # Every Monday at 03:00 UTC (Malta is usually UTC+1 in winter / UTC+2 in summer)
+    - cron: "0 3 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create snapshot folder
+        run: |
+          TS="$(date -u +'%Y-%m-%d_%H-%M-%S')"
+          echo "TS=$TS" >> $GITHUB_ENV
+          mkdir -p _backups
+          rm -rf _backups/*
+          git archive --format=tar HEAD | tar -x -C _backups
+
+      - name: Commit snapshot to Backup branch
+        run: |
+          git checkout Backup
+
+          mkdir -p snapshots
+          SNAP_DIR="snapshots/backup-${TS}"
+          rm -rf "$SNAP_DIR"
+          mkdir -p "$SNAP_DIR"
+
+          # Copy snapshot content
+          rsync -a --delete _backups/ "$SNAP_DIR/"
+
+          # Avoid nesting backups inside backups
+          rm -rf "$SNAP_DIR/_backups" || true
+
+          git add -A
+          git commit -m "backup-${TS}" || echo "No changes to commit"
+          git push origin Backup

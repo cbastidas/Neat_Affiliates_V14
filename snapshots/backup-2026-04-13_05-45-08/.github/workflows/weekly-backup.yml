@@ -29,13 +29,30 @@ jobs:
         run: |
           TS="$(date -u +'%Y-%m-%d_%H-%M-%S')"
           echo "TS=$TS" >> $GITHUB_ENV
-          mkdir -p _backups
-          rm -rf _backups/*
-          git archive --format=tar HEAD | tar -x -C _backups
+          rm -rf /tmp/_backups
+          mkdir -p /tmp/_backups
+          git archive --format=tar HEAD | tar -x -C /tmp/_backups
 
       - name: Commit snapshot to Backup branch
         run: |
+
           git checkout Backup
+
+          # Keep only the most recent 12 backups
+          mkdir -p snapshots
+          if [ -d "snapshots" ]; then
+            cd snapshots
+            backups=$(ls -1d backup-* 2>/dev/null | sort || true)
+            count=$(echo "$backups" | wc -l | tr -d ' ')
+            if [ "$count" -gt 12 ]; then
+              to_delete=$((count - 12))
+              echo "More than 12 backups found ($count). Deleting $to_delete oldest backups..."
+              echo "$backups" | head -n "$to_delete" | xargs -r rm -rf
+            else
+              echo "Backups count ($count) is within limit (12). No cleanup needed."
+            fi
+            cd ..
+          fi
 
           mkdir -p snapshots
           SNAP_DIR="snapshots/backup-${TS}"
@@ -43,7 +60,7 @@ jobs:
           mkdir -p "$SNAP_DIR"
 
           # Copy snapshot content
-          rsync -a --delete _backups/ "$SNAP_DIR/"
+          rsync -a --delete /tmp/_backups/ "$SNAP_DIR/"
 
           # Avoid nesting backups inside backups
           rm -rf "$SNAP_DIR/_backups" || true
